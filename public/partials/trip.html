@@ -1,4 +1,6 @@
-<div class="span12">
-	Tur
-	{{ trip.where }} {{ trip.when }}
+<div class="span12 trip-details">
+	<div class="header">
+		<h1>{{ trip.type | tripType }} fra {{ trip.where }}</h1>
+	 	<h4>{{ trip.when | date:'d/M/yyyy HH:mm' }}</h4>
+	 </div>
 </div>

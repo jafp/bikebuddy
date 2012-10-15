@@ -1,80 +1,75 @@
 <div class="span8">
-  <div ng-repeat="trip in trips" 
-    ng-mouseover="trip.hovered = true" 
-    ng-mouseleave="trip.hovered = false" 
-    class="trip ng-class: {'participating': trip.participating}" >
+  <div ng-repeat="trip in trips | filter:listFilter" 
+	ng-mouseover="trip.hovered = true" 
+	ng-mouseleave="trip.hovered = false" 
+	class="trip ng-class: {'participating': trip.participating}" >
 
-    <div class="type">
-      <div class="label label-success">{{ trip.type }}</div>
-    </div>
+	<div class="type">
+	  <div class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</div>
+	</div>
 
-    <div class="info pointer" ng-click="showTrip(trip)">
-      <span class="where">{{ trip.where }}</span>
-      <span class="who">{{ trip.intensity }}</span>
+	<div class="info pointer" ng-click="showTrip(trip)">
+	  <span class="where">{{ trip.where }}</span>
+	  <span class="who">{{ trip.intensity }}</span>
 
-      <div class="details">
-        {{ trip.when }}
-      </div>
-    </div>
+	  <div class="details">
+		{{ trip.when }}
+	  </div>
+	</div>
 
-    <div class="participants">
-      <div class="count">{{ trip.participants.length }}</div>
-      <div class="title">deltagere</div>
-    </div>
+	<div class="participants">
+	  <div class="count">{{ trip.participants.length }}</div>
+	  <div class="title">deltagere</div>
+	</div>
 
-    <div class="comments">
-      <div class="count">{{ trip.comments.length }}</div>
-      <div class="title">kommentarer</div>
-    </div>
+	<div class="comments">
+	  <div class="count">{{ trip.comments.length }}</div>
+	  <div class="title">kommentarer</div>
+	</div>
 
-    <div class="more">  
-      <button ng-show="trip.hovered" ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
-        <i class="icon-ok icon-white"></i>
-      </button>
-      <button ng-show="trip.hovered" ng-click="leave(trip)"
-              class="btn btn-danger ng-class: {disabled: !trip.participating}" title="Jeg deltager ikke!">
-        <i class="icon-remove icon-white"></i>
-      </button>
-    </div> 
+	<div class="more">  
+	  <button ng-show="trip.hovered" ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
+		<i class="icon-ok icon-white"></i>
+	  </button>
+	  <button ng-show="trip.hovered" ng-click="leave(trip)"
+			  class="btn btn-danger ng-class: {disabled: !trip.participating}" title="Jeg deltager ikke!">
+		<i class="icon-remove icon-white"></i>
+	  </button>
+	</div> 
   </div>
 </div>
 
 <div class="span4">
-  <div class="menu" >
-    <h4 class="search-caption">
-      <!--<i class="icon-search"></i> -->
-      Hvad leder du efter?
-    </h4>
+	<div class="menu" >
+		<h4>Hvad leder du efter?</h4>
+		<form class="form-stacked trip-filter">
+			<div class="control-group">
+				<div class="control-label"><label>Hvad:</label></div>
+				<div class="controls">
+					<select ng-model="filter.type">
+						<option value="all">Landevej/MTB</option>
+						<option value="mtb">MTB</option>
+						<option value="road">Landevej</option>
+					</select>
+				</div>
+		  	</div>
+		  	<div class="control-group">
+				<div class="control-label"><label>Hvor:</label></div>
+				<div class="controls">
+					<select ng-model="filter.region" class="disbled" disabled>
+						<option value="Hovedstadsområdet">Hovedstadsområdet</option>
+						<option value="Sjælland">Sjælland</option>
+						<option value="Vestsjælland">Vestsjælland</option>
+					</select>
+				</div>
+			</div>
+		</form>
 
-    <form class="form-stacked filter-form">
-      <div class="control-group">
-        <div class="control-label"><label>Hvad:</label></div>
-        <div class="controls"><select><option>Landevej/MTB</option><option>MTB</option><option>Landevej</option></select></div>
-      </div>
-      <div class="control-group">
-        <div class="control-label"><label>Hvor:</label></div>
-        <div class="controls">
-          <select>
-            <option>København</option>
-            <option>Nordsjælland</option>
-            <option>Vestsjælland</option>
-          </select>
-        </div>
-      </div>
+	  	<div class="spacer"></div>
 
-      <div class="spacer"></div>
-  <!--
-      <button class="btn btn-success btn-large create-trip-button">
-        <i class="icon-plus icon-white"></i> Ny tur
-      </button>
-    -->
-
-
-    <h4 class="share-caption">Vær med, del din tur!</h4>
-    <a href="/tur/ny" class="btn btn-success btn-large create-trip-button">
-      <i class="icon-share-alt icon-white"></i> Del tur
-    </a>
-
-    </form>
+		<h4>Vær med, del din tur!</h4>
+		<a href="/tur/ny" class="btn btn-success btn-large btn-full-width">
+	  		<i class="icon-share-alt icon-white"></i> Del tur
+		</a>
+	</div>
 </div>
-        </div>

@@ -4,27 +4,25 @@ html {
 }
 
 html, body { 
+	/* Override bootstrap defaults with important */
+	font-family: 'Ubuntu', sans-serif !important;
 	color: #444 !important;
 	font-size: 12px;
 }
 
+/**
+ * ----- Header styling -----
+ */
 header {
 	position: fixed;
   	top: 0;
   	left: 0;
   	width: 100%;
-
   	padding: 25px 0;
 	z-index: 50;
 	background: rgba(255, 255, 255, .95);
 	border-bottom: 1px solid #eee;
 }
-
-h1 a, h1 a:visited, h1 a:active, h1 a:hover {
-	color: #444;
-	text-decoration: none;	
-}
-
 
 header .links {
 	margin-top: 40px;
@@ -49,40 +47,54 @@ header h1 {
 	font-size: 60px;
 }
 
+header h1 a, 
+header h1 a:visited, 
+header h1 a:active, 
+header h1 a:hover {
+	color: #444;
+	text-decoration: none;	
+}
+
+/**
+ * ---- Main content styling ----- 
+ */
 .main {
 	margin-top: 120px;
-}
-
-.content {
-	margin: 0 auto;
-	width: 800px;
-}
-
-.menu {
-	width: 300px;
-}
-
-.menu h4 {
-	-color: #666;
 }
 
 .body {
 	margin-top: 140px;
 }
 
-.share-caption {
+.body h1 {
+	color: #3A87AD;
+}
+
+.footer {
 	margin-top: 30px;
-	margin-bottom: 12px;
+	padding: 20px 0;
+	font-size: 11px;
+	color: #666;
+	border-top: 1px solid #eee;
 }
 
-.create-trip-button {
-	width: 220px;
+/**
+ * Right side menu "widget".
+ */
+.menu {
+	padding: 5px 20px 20px 20px;
+	box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
-.filter-form {
-	margin-top: 12x;
+.menu .btn-full-width {
+	width: 190px;
 }
 
+/**
+ * Stacked forms
+ */
 .form-stacked .control-label label {
 	color: #888;
 	font-size: 11px;
@@ -93,24 +105,24 @@ header h1 {
 	margin-bottom: 0px;
 }
 
-.search-caption {
-}
-
-.search-caption i {
-	margin-bottom: 5px;
-	vertical-align: middle;
-}
-
+/**
+ * Utility class for adding pointer cursor
+ * to elements.
+ */
 .pointer {
 	cursor: pointer;
 }
 
+/**
+ * ----- Trip list styles -----
+ */
 .trip { 
 	position: relative;
 	overflow: hidden;
 	padding: 8px 30px 4px 8px;
 	margin-bottom: 6px;
 	border-radius: 5px;
+	border-bottom: 1px solid #eee;
 }
 
 .trip:last-child {
@@ -139,9 +151,17 @@ header h1 {
 	float: left;
 	margin-left: 15px;
 }
-.trip .info .where { font-weight: bold; }
-.trip .info .who { font-size: 12px; color: #666; }
-.trip .info .details { font-size: 11px; }
+.trip .info .where { 
+	font-weight: bold; 
+}
+
+.trip .info .who { 
+	font-size: 12px; color: #666; 
+}
+
+.trip .info .details { 
+	font-size: 11px; 
+}
 
 .trip .intensity {
 	float: right;
@@ -169,34 +189,18 @@ header h1 {
 	margin-left: 20px;
 }
 
-.trip .participants .count, .trip .comments .count {
+.trip .participants .count, 
+.trip .comments .count {
 	font-weight: bold;
 	font-size: 26px;
 }
 
-.trip .participants .title, .trip .comments, .count {
+.trip .participants .title, 
+.trip .comments, .count {
 	font-size: 10px;
 }
 
 .trip.participating {
 	background: #E8FFD9;
 }
-
-.promote {
-}
-
-.promote.soon { 
-	background: #FFFF99;
-}
-
-.promote.today {
-	background: #E8FFD9;
-}
-
-.footer {
-	margin-top: 30px;
-	padding-top: 20px;
-	font-size: 11px;
-	color: #666;
-	border-top: 1px solid #eee;
-}
+	

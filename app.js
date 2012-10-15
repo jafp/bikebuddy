@@ -26,11 +26,13 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	app.set('port', 3000);
+	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler());
+	app.set('port', 80);
+	app.use(express.errorHandler());
 });
 
 // Routes
@@ -46,7 +48,7 @@ app.get('/api/trips/:id', api.trips.get);
 app.get('*', routes.index);
 
 // Start server
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", 3000, app.settings.env);
+app.listen(app.get('port'), function(){
+  console.log("Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
 
