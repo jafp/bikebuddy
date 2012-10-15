@@ -39,8 +39,8 @@ app.get('/partials/:name', routes.partials);
 
 // JSON API
 app.get('/api/trips', api.trips.list);
-app.get('/api/trips/:id', api.trips.get);
 app.get('/api/trips/testData', api.trips.testData);
+app.get('/api/trips/:id', api.trips.get);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

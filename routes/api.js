@@ -4,9 +4,6 @@ var Trip = require('../models/trip.js');
 var randomItem = function(list) {
 	var idx = Math.floor(Math.random() * list.length);
 	var i = list[idx];
-
-	console.log(list.length, idx, i);
-
 	return i;
 }
 
@@ -23,7 +20,7 @@ exports.trips = {
 		});
 	},
 
-	addPseudo: function(req, res) {
+	testData: function(req, res) {
 		var created = [],
 			names = ['Skovbrynet', 'Holte', 'Tisvilde', 'Roskilde', 'Møns Klint'],
 			intensities = ['EASY', 'MEDIUM', 'HARD', 'PRO'],
