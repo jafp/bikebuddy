@@ -6,28 +6,35 @@ function AppCtrl() {
 
 }
 
-function IndexCtrl($scope, $location) {
+function IndexCtrl($scope, $location, $http) {
 
-	$scope.trips = [
-		{ id: 1, where: 'Skowbrynet', type: 'MTB', intensity: 'EASY', when: 'Two hours', comments: [], participants: [ {}, {} ] },
-		{ id: 2, where: 'Bagsværd', type: 'ROAD', intensity: 'EASY', when: 'Four hours', comments: [ {} ], participants: [{}] }
-	];
+	$http.get('/api/trips')
+		.success(function(data) {
+			$scope.trips = data;
+		})
+		.error(function(data, status) {
+
+		});
 
 	$scope.participate = function(trip) {
-		console.log('asdasd');
-		return false;
 	}
 
 	$scope.leave = function(trip) {
 	}
 
 	$scope.showTrip = function(trip) {		
-		console.log('sssss');
-		$location.path('/tur/' + trip.id);
+		$location.path('/tur/' + trip._id);
 	}
 }
 
-function TripCtrl() {
+function TripCtrl($scope, $routeParams, $http, $location) {
+	$http.get('/api/trips/' + $routeParams.id)
+		.success(function(data) {
+			$scope.trip = data;
+		}) 
+		.error(function() {
+			$location.path('/');
+		});
 }
 
 function NewTripCtrl() {

@@ -12,22 +12,10 @@
       <span class="where">{{ trip.where }}</span>
       <span class="who">{{ trip.intensity }}</span>
 
-
       <div class="details">
         {{ trip.when }}
-
-        <!-- 
-          <a href="#/tur/{{ trip.id }}">{{ trip.participants.length }} deltagere</a> - 
-          <a href="#/tur/{{ trip.id }}">{{ trip.comments.length }} kommentarer</a>
-        -->
       </div>
     </div>
-
-    <!--
-    <div class="when">
-      {{ trip.when }}
-    </div>
-    -->
 
     <div class="participants">
       <div class="count">{{ trip.participants.length }}</div>
@@ -40,12 +28,10 @@
     </div>
 
     <div class="more">  
-      <button ng-show="trip.hovered" 
-              ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
+      <button ng-show="trip.hovered" ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
         <i class="icon-ok icon-white"></i>
       </button>
-      <button ng-show="trip.hovered" 
-              ng-click="leave(trip)"
+      <button ng-show="trip.hovered" ng-click="leave(trip)"
               class="btn btn-danger ng-class: {disabled: !trip.participating}" title="Jeg deltager ikke!">
         <i class="icon-remove icon-white"></i>
       </button>
