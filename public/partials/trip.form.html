@@ -1,0 +1,59 @@
+<div class="span12">
+	<form class="form-horizontal">	
+		<legend>Fortæl om din tur!</legend>
+
+		<div class="control-group">
+			<label class="control-label">Cykeltype</label>
+			<div class="controls">
+				<label class="radio inline">
+					<input type="radio" />
+					MTB
+				</label>
+				<label class="radio inline">
+					<input type="radio" />
+					Landevej
+				</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Landsdel</label>
+			<div class="controls">
+				<select>
+					<option value="Nordsjælland">Nordsjælland</option>
+					<option value="Hovedstaden">Hovedstaden</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Mødested</label>
+			<div class="controls">
+				<input type="text" ng-model="trip.where" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Intensitet</label>
+			<div class="controls">
+				<select>
+					<option>Let</option>
+					<option>Mellem</option>
+					<option>Hård</option>
+					<option>Elite</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Beskrivelse</label>
+			<div class="controls">
+				<textarea></textarea>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<button class="btn">Tilbage</button>
+				<button class="btn btn-primary">OK</button>
+			</div>
+		</div>
+	</form>
+</div>
