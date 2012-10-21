@@ -1,7 +1,10 @@
 <div class="span8">
-  <div ng-repeat="trip in trips | filter:listFilter" 
-	ng-mouseover="trip.hovered = true" 
-	ng-mouseleave="trip.hovered = false" 
+
+	<div ng-show="filteredTrips.length == 0">
+		<h2>Der er desværre ingen ture der matcher dine kriterier :(<h2>
+	</div>
+
+  <div ng-repeat="trip in filteredTrips" 
 	class="trip ng-class: {'participating': trip.participating}" >
 
 	<div class="type">
@@ -9,11 +12,12 @@
 	</div>
 
 	<div class="info pointer" ng-click="showTrip(trip)">
-	  <span class="where">{{ trip.where }}</span>
-	  <span class="who">{{ trip.intensity }}</span>
+	  <span class="where" title="{{ trip.where }} - {{ trip.area | areaName }}">
+	  	<strong>{{ trip.where }}</strong> <small>{{ trip.area | areaName }}</small>
+	  </span>
 
 	  <div class="details">
-		{{ trip.when }}
+		{{ trip.when | date:'d/M/yyyy HH:mm' }}
 	  </div>
 	</div>
 
@@ -28,13 +32,13 @@
 	</div>
 
 	<div class="more">  
-	  <button ng-show="trip.hovered" ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
+	  <button  ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
 		<i class="icon-ok icon-white"></i>
 	  </button>
-	  <button ng-show="trip.hovered" ng-click="leave(trip)"
-			  class="btn btn-danger ng-class: {disabled: !trip.participating}" title="Jeg deltager ikke!">
+	  <!--<button 1ng-show="trip.hovered" ng-click="leave(trip)"
+			  class="btn btn-danger " title="Jeg deltager ikke!">
 		<i class="icon-remove icon-white"></i>
-	  </button>
+	  </button>-->
 	</div> 
   </div>
 </div>
@@ -47,19 +51,18 @@
 				<div class="control-label"><label>Hvad:</label></div>
 				<div class="controls">
 					<select ng-model="filter.type">
-						<option value="all">Landevej/MTB</option>
-						<option value="mtb">MTB</option>
-						<option value="road">Landevej</option>
+						<option value="">MTB og landevej</option>
+						<option value="MTB">MTB</option>
+						<option value="Road">Landevej</option>
 					</select>
 				</div>
 		  	</div>
 		  	<div class="control-group">
 				<div class="control-label"><label>Hvor:</label></div>
 				<div class="controls">
-					<select ng-model="filter.region" class="disbled" disabled>
-						<option value="Hovedstadsområdet">Hovedstadsområdet</option>
-						<option value="Sjælland">Sjælland</option>
-						<option value="Vestsjælland">Vestsjælland</option>
+					<select ng-model="filter.area">
+						<option value="">Alle steder</option>
+						<option ng-repeat="area in areas" value="{{ area.id }}">{{ area.name }}</option>
 					</select>
 				</div>
 			</div>

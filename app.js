@@ -7,6 +7,8 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	routes = require('./routes'),
 	api = require('./routes/api'),
+	User = require('./models/user.js'),
+	Trip = require('./models/trip.js'),
 	app = module.exports = express();
 
 // Connect to MongoDB 
@@ -43,6 +45,9 @@ app.get('/partials/:name', routes.partials);
 app.get('/api/trips', api.trips.list);
 app.get('/api/trips/testData', api.trips.testData);
 app.get('/api/trips/:id', api.trips.get);
+app.put('/api/trips', api.trips.create);
+
+app.get('/api/areas', api.areas.list);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

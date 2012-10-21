@@ -5,20 +5,18 @@ var mongoose = require('mongoose'),
 
 // Define the schema
 var tripSchema = new Schema({
-	where: String,
+	where: { type: String, required: true },
+	area: { type: String, required: true },
 	when: Date,
 	type: String,
 	intensity: String,
+	duration: String,
+	description: String,
 	comments: [{ 
 		comment: String, 
-		when: {
-			type: Date, 
-			default: Date.now 
-		} 
+		when: { type: Date, default: Date.now } 
 	}],
-	participants: [{
-		user: String
-	}]
+	participants: [ { user: String } ]
 });
 
 // Define the model

@@ -7,19 +7,15 @@ angular.module('bb', ['bb.filters', 'bb.services', 'bb.directives']).
 	 */
 	config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-		$routeProvider.when('/', {templateUrl: '/partials/index.html', controller: IndexCtrl});
-
-		$routeProvider.when('/tur/ny', { templateUrl: '/partials/trip.form.html', controller: NewTripCtrl });
-
-		$routeProvider.when('/tur/:id', { templateUrl: '/partials/trip.html', controller: TripCtrl });
-
-	   	$routeProvider.when('/profil', { templateUrl: '/partials/profile.html', controller: ProfileCtrl });
-
-	   	$routeProvider.when('/logind', { templateUrl: '/partials/login.html', controller: LoginCtrl }); 
-
-	   	$routeProvider.when('/om', { templateUrl: '/partials/about.html', controller: AboutCtrl });
-
-	    $routeProvider.otherwise({redirectTo: '/'});
+		$routeProvider
+			.when('/', {templateUrl: '/partials/index.html', controller: IndexCtrl})
+			.when('/tur/ny', { templateUrl: '/partials/trip.form.html', controller: TripFormCtrl })
+			.when('/tur/:id', { templateUrl: '/partials/trip.html', controller: TripCtrl })
+	   		.when('/profil', { templateUrl: '/partials/profile.html', controller: ProfileCtrl })
+	   		.when('/logind', { templateUrl: '/partials/login.html', controller: LoginCtrl })
+	   		.when('/om', { templateUrl: '/partials/about.html', controller: AboutCtrl })
+	   		.when('/ny-profil', { templateUrl: '/partials/user.form.html', controller: UserFormCtrl })
+			.otherwise({redirectTo: '/'})
 
 	    $locationProvider.html5Mode(true);
 
