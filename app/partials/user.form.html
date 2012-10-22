@@ -1,23 +1,23 @@
 <div class="span12">
 	<h4><i class="icon-user"></i> Opret en profil</h4>
 
-	<form class="form-nice">
+	<form name="form" class="form-nice" ng-submit="submit()">
 		<ul>
 			<li>
 				<label class="input-label">Dit navn</label>
-				<input type="text" />
+				<input type="text" ng-model="name" />
 			</li>
 			<li>
 				<label class="input-label">E-mail</label>
-				<input type="text" />
+				<input type="text" ng-model="email" />
 			</li>
 			<li>
 				<label class="input-label">Password</label>
-				<input type="password" />
+				<input type="password" ng-model="password" />
 			</li>
 			<li>
 				<label class="input-label">Gentag password</label>
-				<input type="password" />
+				<input type="password" ng-model="password_confirmation" />
 			</li>
 			<li>
 				<label class="input-label"></label>

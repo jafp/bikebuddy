@@ -1,5 +1,6 @@
 
 var Area = require('../models/area.js');
+var User = require('../models/user.js');
 var Trip = require('../models/trip.js');
 
 var randomItem = function(list, key) {
@@ -11,6 +12,16 @@ var randomItem = function(list, key) {
 	}
 
 	return i;
+}
+
+exports.users = {
+	create: function(req, res) {
+		var user = new User(req.body);
+
+		user.save(function(err, user) {
+			res.send( !!err ? err : user );
+		});
+	}
 }
 
 exports.areas = {

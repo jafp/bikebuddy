@@ -23,7 +23,7 @@ app.configure(function(){
 	});
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use('/static', express.static(__dirname + '/public'));
+	app.use('/static', express.static(__dirname + '/../app'));
 	app.use(app.router);
 });
 
@@ -48,6 +48,8 @@ app.get('/api/trips/:id', api.trips.get);
 app.put('/api/trips', api.trips.create);
 
 app.get('/api/areas', api.areas.list);
+
+app.put('/api/users', api.users.create);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

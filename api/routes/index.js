@@ -5,5 +5,5 @@ exports.index = function(req, res) {
 
 exports.partials = function(req, res) {
 	var name = req.params.name;
-	res.sendfile('public/partials/' + 	name);
+	res.sendfile('app/partials/' + name);
 }
