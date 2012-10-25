@@ -59,6 +59,14 @@ angular.module('bb.directives', []).
 
 	.directive('errors', function() {
 
+		var dict = {
+			'required': 'Udfyld venligst',
+			'invalid-email': 'Ugyldig e-mailadresse',
+			'email-already-in-use': 'Der findes allerede en bruger med den e-mail',
+			'invalid-login': 'Udgyldigt logind, prøv igen',
+			'password-not-confirmed': 'Password ikke gentaget rigtigt'
+		};
+
 		var linker = function(scope, element, attrs) {
 			var prefix = attrs.errorsModelPrefix || '',
 				fieldsWithErrors,
@@ -76,7 +84,7 @@ angular.module('bb.directives', []).
 							fieldsWithErrors[prefix + err.param] = fieldErrors = []
 						}
 
-						fieldErrors.push(err.msg);
+						fieldErrors.push(dict[err.msg] || err.msg);
 					});	
 
 					$('input, select, textarea', element).not('[type=submit]').each(function(idx, input) {
@@ -99,46 +107,4 @@ angular.module('bb.directives', []).
 			link: linker
 		}
 
-	})
-
-	.directive('fieldError', function() {
-
-		var getInput = function(path) {
-			return $('[ng-model="' + path + '"]');
-		}
-
-		var getFieldName = function(input) {
-			var label = input.parent().find('label');
-			return label.clone().children().remove().end().text();
-		}
-
-		var getTypeTranslation = function(type) {
-			if (type === 'required') {
-				return 'Påkrævet';
-			}
-			if (type === 'invalid-email') {
-				return 'Ugyldig email';
-			}
-			if (type === 'password-not-confirmed') {
-				return 'Passwords er ikke ens'
-			}
-			return type;
-		}
-
-		var linker = function(scope, element, attrs) {
-			var error = scope.$eval(attrs.fieldError),
-				prefix = attrs.pathPrefix || '',
-				input,
-				label,
-				fieldName;
-
-			input = getInput(prefix + error.param);
-			fieldName = getFieldName(input);
-
-			element.text(fieldName.trim() + ': ' + getTypeTranslation(error.msg));
-		}
-
-		return {
-			link: linker
-		}
 	});

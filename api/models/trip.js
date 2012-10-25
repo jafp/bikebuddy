@@ -6,8 +6,8 @@ var mongoose = require('mongoose'),
 // Define the schema
 var tripSchema = new Schema({
 	creator: { type: Schema.Types.ObjectId, ref: 'User' },
-	where: { type: String, required: true },
-	area: { type: String, required: true },
+	where: { type: String },
+	area: { type: String },
 	when: Date,
 	type: String,
 	intensity: String,

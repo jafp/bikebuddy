@@ -89,25 +89,39 @@ exports.areas = {
 
 exports.trips = {
 	create: function(req, res) {
-		var trip = new Trip(req.body);
+		var errors;
 
-		trip.save(function(err, trip) {
-			if (err) {
-				res.send(err);
-			} else {
-				res.send(trip);
-			}
-		});
+		req.check('trip.where', 'required').notEmpty();
+		req.check('trip.when', 'required').notEmpty();
+		errors = req.validationErrors();
+
+		if (errors) {
+			res.send({ errors: errors });
+		} else {
+
+			var trip = new Trip(req.body.trip);
+			trip.creator = req.session.user._id;
+			trip.participants.push(req.session.user._id);
+
+			trip.save(function(err, trip) {
+				if (err) {
+					res.send(err);
+				} else {
+					res.send(trip);
+				}
+			});
+
+		}
 	},
 
 	get: function(req, res) {
-		Trip.findById(req.params.id, function(err, trip) {
+		Trip.findById(req.params.id).populate('participants').populate('creator').exec( function(err, trip) {
 			res.send(trip);
 		});
 	},
 
 	list: function(req, res) {
-		Trip.find().populate('participants').sort('when').sort('_id').exec(function(err, trips) {
+		Trip.find().sort('when').sort('_id').exec(function(err, trips) {
 			res.send(trips);
 		});
 	},
@@ -132,6 +146,7 @@ exports.trips = {
 	},
 
 	leave: function(req, res) {
+		console.log(req.params, req.body);
 		Trip.findById(req.params.id, function(err, trip) {
 			if (err) {
 				res.send({error: 'trip-not-found'});
@@ -144,6 +159,7 @@ exports.trips = {
 						trip.save(function(err, trip) {
 							res.send(trip);
 						});
+						res.send(trip);
 					}
 				});
 			}

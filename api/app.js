@@ -70,7 +70,7 @@ app.get('/partials/:name', routes.partials);
 app.get('/api/trips/testData', api.trips.testData);
 app.get('/api/trips', api.trips.list);
 app.post('/api/trips/:id/join', api.trips.join);
-app.delete('/api/trips/:id/leave', api.trips.leave);
+app.post('/api/trips/:id/leave', api.trips.leave);
 app.get('/api/trips/:id', api.trips.get);
 app.put('/api/trips', api.trips.create);
 

@@ -4,22 +4,29 @@
 			<div class="header">
 				<h4>{{ trip.type | tripType }} fra {{ trip.where }} 
 					<small><i class="icon-time"></i> {{ trip.when | date:'d/M/yyyy HH:mm' }}</small>
+					<small><i class="icon-user"></i> <strong>{{ trip.participants.length }}</strong> deltagere</small>
 				</h4>
+			</div>
+
+			<div class="participants-list">
+				<h5>Deltagere</h5>
+				<ul>
+					<li ng-repeat="participant in trip.participants">
+						{{ participant.name }} ({{ participant.email }})
+						<span class="host" ng-show="participant._id == trip.creator._id">
+							<small>Arrangøren</small>
+						</span>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 
-
+	<!--
 	 <div class="row">
 	 	<div class="span6">
-	 		<h5><i class="icon-exclamation-sign"></i> Detaljer</h5>
-	 			{{ trip.duration }}
-	 			{{ trip.description }}
-
 	 		<h5><i class="icon-comment"></i> Kommentarer</h5>
 	 	</div>
-	 	<div class="span6">
-	 		<h5><i class="icon-user"></i> Deltagere</h5>
-	 	</div>
 	 </div>
+	-->
 </div>

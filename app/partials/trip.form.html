@@ -1,18 +1,17 @@
 <div class="span12">
 	<h4><i class="icon-share"></i> Opret og del din tur</h4>
 
-	<div class="alert alert-error" ng-show="trip._errors">
-		<strong>Åh åh!</strong> Din tur kunne ikke gemmes!
+	<div class="see-me well">
+		<p>
+			<strong>Sådan!</strong> Fedt du deler din tur med os!<br/>
+			Udfyld felterne herunder, og alle andre kan se din tur og tilmelde sig til den.
+		</p> 
 	</div>
 
-	<div class="alert alert-success" ng-show="tripSaved">
-		<strong>Tak!</strong> <a href="/tur/{{savedTrip._id}}">Din tur</a> er nu gemt! 
-	</div>
-
-	<form name="form" class="form-nice" ng-submit="submit()" novalidate >
+	<form name="form" class="form-nice" ng-submit="submit()" errors="trip.errors" >
 		<ul>
 			<li>
-				<label class="input-label">Cykeltype</label>
+				<label class="input-label">Cykeltype </label>
 				<label class="inline">
 					<input ng-model="trip.type" type="radio" value="MTB"  />
 					MTB
@@ -23,10 +22,9 @@
 				</label>
 			</li>
 			<li>
-				<label class="input-label">Mødested</label>
+				<label class="input-label">Mødested <small>(påkrævet)</small></label>
 				<input ng-model="trip.where" name="where" type="text" class="span4" 
-					placeholder="Fx vej, stoppested, station osv." required />
-				<span ng-show="form.where.$error.required" class="invalid"><img src="/static/img/error.png" /> Mødested skal udfyldes!</span>
+					placeholder="Vej, stoppested, station" />
 			</li>
 			<li>
 				<label class="input-label">Landsdel</label>
@@ -36,11 +34,8 @@
 				</select>
 			</li>
 			<li>
-				<label class="input-label">Dato</label>
-				<input ng-model="trip.when" name="when" class="span4" datepicker type="text" placeholder="Vælg dato" required />
-				<span ng-show="form.when.$error.required" class="invalid">
-					<img src="/static/img/error.png" /> Dato skal vælges!
-				</span>
+				<label class="input-label">Dato <small>(påkrævet)</small></label>
+				<input ng-model="trip.when" name="when" class="span4" datepicker type="text" placeholder="Vælg dato" />
 			</li>
 			<li>
 				<label class="input-label">Tidspunkt</label>
@@ -49,17 +44,18 @@
 				</select>
 			<li>
 				<label class="input-label">Forventet varighed</label>
-				<input ng-model="trip.duration" type="text" class="span4" placeholder="Tid eller afstand"/>
+				<input ng-model="trip.duration" type="text" class="span4" placeholder="Tid, distance" />
 			</li>
+			<!--
 			<li>
 				<label class="input-label">Beskrivelse af turen</label>
-				<textarea ng-model="description" class="span4" 
-					placeholder="Skriv evt. en kort beskrivelse af turen"></textarea>
+				<textarea ng-model="description" class="span4"></textarea>
 			</li>
+		-->
 			<li>
 				<label class="input-label"></label>
 				<button class="btn">Tilbage</button>
-				<input type="submit" ng-disabled="form.$invalid || trip._submit" class="btn btn-primary" value="Opret" />
+				<input type="submit" class="btn btn-info" value="Opret" />
 			</li>
 		</ul>
 	</form>

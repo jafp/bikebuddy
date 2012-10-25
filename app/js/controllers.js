@@ -35,7 +35,7 @@ function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 				for (i = 0, len = data.length; i < len; i++) {
 					t = data[i];
 
-					if (_.find(t.participants, function(p) { return p._id === $rootScope.user._id; })) {
+					if (_.contains(t.participants, $rootScope.user._id)) {
 						t.participating = true;
 					}
 				}
@@ -88,7 +88,7 @@ function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 			$location.path('/ny-profil');
 			$flash.put('reason', 'not-logged-in');
 		} else {
-			$http.post('/api/trips/' + trip._id + '/join', { user: $scope.user._id }).success(function(data) {
+			$http.post('/api/trips/' + trip._id + '/join', { user: $rootScope.user._id }).success(function(data) {
 				if (data.error) {
 					alert('Du kunne ikke tilmeldes turen :-(');
 				} else {
@@ -102,7 +102,7 @@ function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 	 * Leave the trip. 
 	 */
 	$scope.leave = function(trip) {
-		$http.delete('/api/trips/' + trip._id + '/leave', { user: $scope.user._id }).success(function(data) {
+		$http.post('/api/trips/' + trip._id + '/leave', { user: $scope.user._id }).success(function(data) {
 			if (data.error) {
 				alert('Du kunne ikke afmeldes turen :-(');
 			} else {
@@ -138,7 +138,7 @@ function TripCtrl($scope, $routeParams, $http, $location) {
 TripCtrl.$inject = ['$scope', '$routeParams', '$http', '$location'];
 
 
-function TripFormCtrl($scope, $http) {
+function TripFormCtrl($scope, $http, $location, $flash) {
 
 	var reset = function() {
 		$scope.trip = { type: 'MTB', area: 'nordsjaelland-og-koebenhavn', time: '08:00' };
@@ -155,35 +155,26 @@ function TripFormCtrl($scope, $http) {
 		$scope.trip._submit = true;
 
 		trip = angular.copy($scope.trip);
-		date = moment(trip.when + ' ' + trip.time, 'DD/MM/YYYY HH:mm');
 
-		if (!date.isValid()) {
-			// Fallback to this time plus one day
-			// if the inputted date is invalid
-			date = moment().add('days', 1).fromNow();
+		// If we actually got some input, when try to convert it
+		// to a format that the server understands.
+		if (trip.when && trip.when !== '') {
+			trip.when = moment(trip.when + ' ' + trip.time, 'DD/MM/YYYY HH:mm').toDate();
 		}
 
-		trip.when = (typeof date.toDate === 'function') ? date.toDate() : new Date();
-
-		$http.put('/api/trips', trip).success(function(data, status) {
+		$http.put('/api/trips', { trip: trip }).success(function(data, status) {
 			$scope.trip._submit = false;
 
 			if (data.errors) {
-				$scope.trip._errors = data.errors;
+				$scope.trip.errors = data.errors;
 			} else {
-				reset();
-				$scope.savedTrip = data;
-				$scope.tripSaved = true;
-
-				// AARG!! DOM STUFF!!!
-				$('body').animate({
-					scrollTop: 0
-				}, 200);
+				$flash.put('notice', 'trip-created');
+				$location.path('/tur/' + data._id);
 			}
 		});
 	}
 }
-TripFormCtrl.$inject = ['$scope', '$http'];
+TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash'];
 
 
 function ProfileCtrl() {
