@@ -87,7 +87,9 @@ header h1 a:hover {
 }
 
 .form-nice ul > li > label.input-label {
-	width: 250px;
+	width: 220px;
+	line-height: 30px;
+	vertical-align: top;
 	margin-bottom: 0;
 	display: inline-block;
 }
@@ -114,12 +116,23 @@ header h1 a:hover {
 }
 
 .form-nice span.invalid {
+	line-height: 30px;
+	vertical-align: top;
+	padding-left: 5px;
 	color: #B94A48;
+}
+
+.form-nice span.invalid > img {
+	vertical-align: 8%;
 }
 
 .form-error-list {
 	font-size: 12px !important;
 	margin-bottom: 5px !important;
+}
+
+.form-nice .error {
+	border-color: #B94A48;
 }
 
 
@@ -157,6 +170,10 @@ header h1 a:hover {
 	font-size: 11px;
 	color: #666;
 	border-top: 1px solid #eee;
+}
+
+.alert {
+	margin-bottom: 10px !important;
 }
 
 /**

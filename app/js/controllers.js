@@ -22,6 +22,7 @@ AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
 function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 	$scope.filter = { area: '', type: '' };
+	$scope.userCreated = $flash.get('user-created');
 
 	var load = function() {
 		$http.get('/api/trips').success(function(data) {
@@ -191,9 +192,9 @@ function ProfileCtrl() {
 function AboutCtrl() {
 }
 
-function UserFormCtrl($scope, $http, $flash) {
+function UserFormCtrl($scope, $http, $flash, $rootScope, $location) {
 	$scope.user = {};
-	$scope.reason = $flash.get('reason');
+	$scope.reason = $flash.get('reason');	
 
 	$scope.submit = function() {
 		var copy = angular.copy($scope.user);
@@ -201,7 +202,9 @@ function UserFormCtrl($scope, $http, $flash) {
 			if (data.errors) {
 				$scope.user.errors = data.errors;
 			} else {
-				$scope.user.saved = true;
+				$rootScope.user = data;
+				$flash.put('user-created', true);
+				$location.path('/');
 			}
 		});
 	};
@@ -213,7 +216,8 @@ function LoginCtrl($scope, $http, $location, $rootScope) {
 	$scope.submit = function() {
 		$http.post('/api/users/session', $scope.user).success(function( data ) {
 			if (data.invalidCredentials) {
-				
+				$scope.user.errors = [{param: 'user.email', msg: 'invalid-login'}, 
+					{param: 'user.password', msg: ''}];
 			} else {
 				$rootScope.user = data.user;
 				$location.path('/');

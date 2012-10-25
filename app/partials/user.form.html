@@ -2,19 +2,13 @@
 	<h4><i class="icon-user"></i> Opret en profil</h4>
 
 	<div class="alert alert-info" ng-show="reason == 'not-logged-in'">
-		<h4>Hey, velkommen til!</h4>
+		<strong>Hey, velkommen til!</strong><br />
 		Opret venligst en bruger for at bruge sidens funktioner!
 	</div>
 
-	<div ng-show="user.errors" class="alert alert-error form-error-list">
-		<ul>
-			<li ng-repeat="error in user.errors">
-				<span field-error="error" form="form" path-prefix="user."></span>
-			</li>
-		</ul>
-	</div>
+	<div class="css-arrow-big"></div>
 
-	<form name="form" class="form-nice" ng-submit="submit()">
+	<form name="form" class="form-nice" ng-submit="submit()" errors="user.errors" errors-model-prefix="user.">
 		<ul>
 			<li>
 				<label class="input-label">Dit navn <small>(påkrævet)</small></label>

@@ -28,21 +28,33 @@ exports.users = {
 		req.assert('email', 'invalid-email').isEmail();
 		req.assert('email', 'required').notEmpty();
 		req.assert('password', 'required').notEmpty();
-		req.assert('password_confirmation', 'password-not-confirmed').equals(req.body.password_confirmation);
+		req.assert('password_confirmation', 'password-not-confirmed').equals(req.body.password);
 
-		errors = req.validationErrors();
-		if (errors) {
-			res.send({ errors: errors });
-		} else {
-			var user = new User(req.body);
-			user.save(function(err) {
-				if (err) {
-					res.send(err);
-				} else {
-					res.send(user);
+		User.findOne({email: req.body.email}, function(err, user) {
+			if (err) {
+				res.send(err);
+			} else {
+				if (user) {
+					req.assert('email').error('email-already-in-use');
 				}
-			});
-		}
+
+				errors = req.validationErrors();
+				if (errors) {
+					res.send({ errors: errors });
+
+				} else {
+					var user = new User(req.body);
+					user.save(function(err) {
+						if (err) {
+							res.send(err);
+						} else {
+							req.session.user = user;
+							res.send(user);
+						}
+					});
+				}
+			}
+		});
 	},
 	login: function(req, res) {
 		User.authenticate(req.body.email, req.body.password, function(user) {

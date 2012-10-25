@@ -57,6 +57,50 @@ angular.module('bb.directives', []).
 		}
 	})
 
+	.directive('errors', function() {
+
+		var linker = function(scope, element, attrs) {
+			var prefix = attrs.errorsModelPrefix || '',
+				fieldsWithErrors,
+				fieldErrors,
+				ngModelName,
+				span;
+
+			scope.$watch(attrs.errors, function(errors) {
+				if (errors) {
+					fieldsWithErrors = {};
+					// Group by param and collect errors
+					_.each(errors, function(err) {
+						fieldErrors = fieldsWithErrors[prefix + err.param];
+						if (!fieldErrors) {
+							fieldsWithErrors[prefix + err.param] = fieldErrors = []
+						}
+
+						fieldErrors.push(err.msg);
+					});	
+
+					$('input, select, textarea', element).not('[type=submit]').each(function(idx, input) {
+						input = $(input).removeClass('error');
+						input.parent().find('.invalid').remove();
+						ngModelName = input.attr('ng-model');
+						fieldErrors = fieldsWithErrors[ngModelName];
+						if (fieldErrors) {
+							input.addClass('error');
+							span = $('<span class="invalid"><img src="/static/img/error.png" /> </span>');
+							span.append(fieldErrors.join(', '));
+							input.parent().append(span);
+						}
+					});
+				}
+			});
+		}
+
+		return {
+			link: linker
+		}
+
+	})
+
 	.directive('fieldError', function() {
 
 		var getInput = function(path) {
