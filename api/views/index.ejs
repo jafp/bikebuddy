@@ -14,17 +14,29 @@
   <header>
       <div class="container">
         <div class="row">
-          <div class="span8">
+          <div class="span5">
             <h1><a href="/">bikebuddy</a></h1>
             <h4>find din cykelbuddy</h4>
           </div>
-          <div class="span4">
+          <div class="span7">
             <div class="links">
               <a href="/">Ture</a>
               <span class="bar">|</span>
-              <a href="/profil">Min profil</a>
-              <span class="bar">|</span>
+              
               <a href="/om">Om bikebuddy</a>
+              <span class="bar">|</span>
+              
+              <span ng-show="user">
+                <a href="/profil">Min profil ({{ user.name }})</a>
+                <span class="bar">|</span>
+                <a href="" ng-click="logout()">Log ud</a>
+              </span>
+              <span ng-show="!user">
+                <a href="/logind">Log ind</a> 
+                <span class="bar">|</span>
+                <a href="/ny-profil" class="promote">Opret profil</a>
+              </span>
+
             </div>
           </div>
       </div>

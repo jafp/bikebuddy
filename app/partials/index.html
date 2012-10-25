@@ -32,13 +32,13 @@
 	</div>
 
 	<div class="more">  
-	  <button  ng-click="participate(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Jeg deltager!">
+	  <button  ng-show="!trip.participating" ng-click="join(trip)" class="btn btn-primary ng-class: {disabled: trip.participating}" title="Du deltager ikke, klik for at tilmelde">
 		<i class="icon-ok icon-white"></i>
 	  </button>
-	  <!--<button 1ng-show="trip.hovered" ng-click="leave(trip)"
-			  class="btn btn-danger " title="Jeg deltager ikke!">
+	  <button ng-show="trip.participating" ng-click="leave(trip)"
+			  class="btn btn-danger " title="Du deltager allerede, klik for at afmelde">
 		<i class="icon-remove icon-white"></i>
-	  </button>-->
+	  </button>
 	</div> 
   </div>
 </div>

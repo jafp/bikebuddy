@@ -2,19 +2,49 @@
 
 /* Controllers */
 
-function AppCtrl($rootScope, $http) {
+function AppCtrl($scope, $rootScope, $http, $location) {
+	$http.get('/api/users/session').success(function(data) {
+		$rootScope.user = data;
+	});
+
 	$http.get('/api/areas').success(function(data) {
 		$rootScope.areas = data;
 	});
-}
-AppCtrl.$inject = ['$rootScope', '$http'];
 
-function IndexCtrl($rootScope, $scope, $location, $http) {
+	$scope.logout = function() {
+		$http.delete('/api/users/session').success(function() {
+			$rootScope.user = null;
+			$location.path('/longrandomurl');
+		});
+	}
+}
+AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location'];
+
+function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 	$scope.filter = { area: '', type: '' };
 
-	$http.get('/api/trips').success(function(data) {
-		$scope.trips = $scope.filteredTrips = data;
-	});
+	var load = function() {
+		$http.get('/api/trips').success(function(data) {
+			var i, len, t;
+			// The trips are sorted server side on 'when' and '_id'.
+			// TODO: Should we do it client side instead?
+
+			// Set a flag on each trip if the current user are participating.
+			if ($rootScope.user) {
+				for (i = 0, len = data.length; i < len; i++) {
+					t = data[i];
+
+					if (_.find(t.participants, function(p) { return p._id === $rootScope.user._id; })) {
+						t.participating = true;
+					}
+				}
+			}	
+
+			$scope.trips = $scope.filteredTrips = _.filter(data, listFilter);
+		});
+	}	
+
+	load();
 
 	/**
 	 * Filter function to filter each item in the list
@@ -52,13 +82,32 @@ function IndexCtrl($rootScope, $scope, $location, $http) {
 	 * Acknowledge that you participate in the given
 	 * trip.
 	 */
-	$scope.participate = function(trip) {
+	$scope.join = function(trip) {
+		if (!$scope.user) {
+			$location.path('/ny-profil');
+			$flash.put('reason', 'not-logged-in');
+		} else {
+			$http.post('/api/trips/' + trip._id + '/join', { user: $scope.user._id }).success(function(data) {
+				if (data.error) {
+					alert('Du kunne ikke tilmeldes turen :-(');
+				} else {
+					load();
+				}
+			});
+		}
 	}
 
 	/**
 	 * Leave the trip. 
 	 */
 	$scope.leave = function(trip) {
+		$http.delete('/api/trips/' + trip._id + '/leave', { user: $scope.user._id }).success(function(data) {
+			if (data.error) {
+				alert('Du kunne ikke afmeldes turen :-(');
+			} else {
+				load();
+			}
+		});
 	}
 
 	/**
@@ -68,7 +117,7 @@ function IndexCtrl($rootScope, $scope, $location, $http) {
 		$location.path('/tur/' + trip._id);
 	}
 }
-IndexCtrl.$inject = ['$rootScope', '$scope', '$location', '$http'];
+IndexCtrl.$inject = ['$rootScope', '$scope', '$location', '$http', '$flash'];
 
 
 function TripCtrl($scope, $routeParams, $http, $location) {
@@ -136,14 +185,42 @@ function TripFormCtrl($scope, $http) {
 TripFormCtrl.$inject = ['$scope', '$http'];
 
 
-function LoginCtrl() {
-}
-
 function ProfileCtrl() {
 }
 
 function AboutCtrl() {
 }
 
-function UserFormCtrl() {
+function UserFormCtrl($scope, $http, $flash) {
+	$scope.user = {};
+	$scope.reason = $flash.get('reason');
+
+	$scope.submit = function() {
+		var copy = angular.copy($scope.user);
+		$http.put('/api/users', copy).success(function( data ) {
+			if (data.errors) {
+				$scope.user.errors = data.errors;
+			} else {
+				$scope.user.saved = true;
+			}
+		});
+	};
 }
+
+function LoginCtrl($scope, $http, $location, $rootScope) {
+	$scope.user = {};
+
+	$scope.submit = function() {
+		$http.post('/api/users/session', $scope.user).success(function( data ) {
+			if (data.invalidCredentials) {
+				
+			} else {
+				$rootScope.user = data.user;
+				$location.path('/');
+			}
+		});
+	}
+}
+
+
+

@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 // Define the schema
 var tripSchema = new Schema({
+	creator: { type: Schema.Types.ObjectId, ref: 'User' },
 	where: { type: String, required: true },
 	area: { type: String, required: true },
 	when: Date,
@@ -16,7 +17,7 @@ var tripSchema = new Schema({
 		comment: String, 
 		when: { type: Date, default: Date.now } 
 	}],
-	participants: [ { user: String } ]
+	participants: [ { type: Schema.Types.ObjectId, ref: 'User' } ]
 });
 
 // Define the model

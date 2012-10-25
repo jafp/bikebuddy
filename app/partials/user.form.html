@@ -1,23 +1,36 @@
 <div class="span12">
 	<h4><i class="icon-user"></i> Opret en profil</h4>
 
+	<div class="alert alert-info" ng-show="reason == 'not-logged-in'">
+		<h4>Hey, velkommen til!</h4>
+		Opret venligst en bruger for at bruge sidens funktioner!
+	</div>
+
+	<div ng-show="user.errors" class="alert alert-error form-error-list">
+		<ul>
+			<li ng-repeat="error in user.errors">
+				<span field-error="error" form="form" path-prefix="user."></span>
+			</li>
+		</ul>
+	</div>
+
 	<form name="form" class="form-nice" ng-submit="submit()">
 		<ul>
 			<li>
-				<label class="input-label">Dit navn</label>
-				<input type="text" ng-model="name" />
+				<label class="input-label">Dit navn <small>(påkrævet)</small></label>
+				<input type="text" ng-model="user.name" />
 			</li>
 			<li>
-				<label class="input-label">E-mail</label>
-				<input type="text" ng-model="email" />
+				<label class="input-label">E-mail <small>(påkrævet)</small></label>
+				<input type="text" ng-model="user.email" />
 			</li>
 			<li>
-				<label class="input-label">Password</label>
-				<input type="password" ng-model="password" />
+				<label class="input-label">Password <small>(påkrævet)</small></label>
+				<input type="password" ng-model="user.password" />
 			</li>
 			<li>
-				<label class="input-label">Gentag password</label>
-				<input type="password" ng-model="password_confirmation" />
+				<label class="input-label">Gentag password <small>(påkrævet)</small></label>
+				<input type="password" ng-model="user.password_confirmation" />
 			</li>
 			<li>
 				<label class="input-label"></label>

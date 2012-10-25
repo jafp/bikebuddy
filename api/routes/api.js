@@ -1,7 +1,8 @@
 
-var Area = require('../models/area.js');
-var User = require('../models/user.js');
-var Trip = require('../models/trip.js');
+var Area = require('../models/area.js'),
+	User = require('../models/user.js'),
+	Trip = require('../models/trip.js'),
+	util = require('util');
 
 var randomItem = function(list, key) {
 	var idx = Math.floor(Math.random() * list.length);
@@ -15,14 +16,58 @@ var randomItem = function(list, key) {
 }
 
 exports.users = {
-	create: function(req, res) {
-		var user = new User(req.body);
-
-		user.save(function(err, user) {
-			res.send( !!err ? err : user );
+	get: function(req, res) {
+		User.find().exec(function(err, trips) {
+			res.send(trips);
 		});
+	},
+	create: function(req, res) {
+		var errors;
+
+		req.assert('name', 'required').notEmpty();
+		req.assert('email', 'invalid-email').isEmail();
+		req.assert('email', 'required').notEmpty();
+		req.assert('password', 'required').notEmpty();
+		req.assert('password_confirmation', 'password-not-confirmed').equals(req.body.password_confirmation);
+
+		errors = req.validationErrors();
+		if (errors) {
+			res.send({ errors: errors });
+		} else {
+			var user = new User(req.body);
+			user.save(function(err) {
+				if (err) {
+					res.send(err);
+				} else {
+					res.send(user);
+				}
+			});
+		}
+	},
+	login: function(req, res) {
+		User.authenticate(req.body.email, req.body.password, function(user) {
+			req.session.user = user;
+
+			res.send({ user: user });
+		}, function(error) {
+			res.send({ invalidCredentials: true });
+		});
+	},
+	logout: function(req, res) {
+		delete req.session.user;
+		res.send({ loggedOut: true });
+	},
+	currentUser: function(req, res) {
+		// Only for testing on my local laptop
+		/*
+		User.authenticate('j@p.dk', '1234', function(user) {
+			res.send(user);
+		});
+		*/
+		res.send(req.session.user);
 	}
 }
+
 
 exports.areas = {
 	list: function(req, res) {
@@ -50,11 +95,52 @@ exports.trips = {
 	},
 
 	list: function(req, res) {
-		Trip.find().sort('when').exec(function(err, trips) {
+		Trip.find().populate('participants').sort('when').sort('_id').exec(function(err, trips) {
 			res.send(trips);
 		});
 	},
 
+	join: function(req, res) {
+		Trip.findById(req.params.id, function(err, trip) {
+			if (err) {
+				res.send({error: 'trip-not-found'});
+			} else {
+				User.findById(req.body.user, function(err, user) {
+					if (err) {
+						res.send({error: 'user-not-found'});
+					} else {
+						trip.participants.push(user._id);
+						trip.save(function(err, trip) {
+							res.send(trip);
+						});
+					}
+				});
+			}
+		});
+	},
+
+	leave: function(req, res) {
+		Trip.findById(req.params.id, function(err, trip) {
+			if (err) {
+				res.send({error: 'trip-not-found'});
+			} else {
+				User.findById(req.body.user, function(err, user) {
+					if (err) {
+						res.send({error: 'user-not-found'});
+					} else {
+						trip.participants.splice(trip.participants.indexOf(req.body.user), 1);
+						trip.save(function(err, trip) {
+							res.send(trip);
+						});
+					}
+				});
+			}
+		});
+	},
+
+	/**
+	 * API call for generating some random test data.
+	 */
 	testData: function(req, res) {
 		var created = [],
 			areas = Area.list(),
