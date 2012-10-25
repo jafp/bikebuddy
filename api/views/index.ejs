@@ -13,30 +13,43 @@
 
   <header>
       <div class="container">
+        <div class="user">
+            <span ng-show="user">
+              <a href="/profil"><a href=""><i class="icon-user"></i> {{ user.name }}</a>
+              <span class="spacer"></span>
+              <a href="" ng-click="logout()"><i class="icon-arrow-right"></i> Log ud</a>
+            </span>
+            <span ng-show="!user">
+              <a href="/logind"><i class="icon-user"></i> Log ind</a> 
+              <span class="spacer"></span>
+              <a href="/ny-profil" class="promote"><i class="icon-plus"></i> Opret profil</a>
+            </span>
+        </div>
+
         <div class="row">
           <div class="span5">
             <h1><a href="/">bikebuddy</a></h1>
-            <h4>find din cykelbuddy</h4>
+            <h4>find dine cykelbuddies</h4>
           </div>
           <div class="span7">
             <div class="links">
-              <a href="/">Ture</a>
-              <span class="bar">|</span>
-              
-              <a href="/om">Om bikebuddy</a>
+              <a href="/"><i class="icon-white icon-road"></i> Ture</a>
+              <a href="/"><i class="icon-white icon-book"></i> Artikler</a>
+              <a href="/om"><i class="icon-white icon-home"></i> Om Bikebuddy</a>
+<!--
               <span class="bar">|</span>
               
               <span ng-show="user">
-                <a href="/profil">Min profil ({{ user.name }})</a>
+                <a href="/profil">Min profil</a>
                 <span class="bar">|</span>
                 <a href="" ng-click="logout()">Log ud</a>
               </span>
               <span ng-show="!user">
-                <a href="/logind">Log ind</a> 
+                <a href="/logind"><i class="icon-white icon-user"></i> Log ind</a> 
                 <span class="bar">|</span>
-                <a href="/ny-profil" class="promote">Opret profil</a>
+                <a href="/ny-profil" class="promote"><i class="icon-white icon-plus"></i> Opret profil</a>
               </span>
-
+            -->
             </div>
           </div>
       </div>
