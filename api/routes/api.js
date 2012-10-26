@@ -121,8 +121,20 @@ exports.trips = {
 	},
 
 	list: function(req, res) {
-		Trip.find().sort('when').sort('_id').exec(function(err, trips) {
-			res.send(trips);
+		var query = Trip.find(),
+			limit = req.param('limit'),
+			sort = req.param('sort') || 'when';
+
+		if (limit) {
+			query.limit(limit);
+		}
+
+		if (sort) {
+			query.sort(sort);
+		}
+
+		query.sort('_id').exec(function(err, trips) {
+			res.send({ trips: trips });
 		});
 	},
 

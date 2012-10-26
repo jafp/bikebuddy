@@ -1,84 +1,66 @@
-<div class="span8">
-
-	<div ng-show="userCreated" class="alert alert-success">
-		<strong>Sådan!</strong> Du er nu oprettet som bruger på <i>bikebuddy.dk</i>
-	</div>
-
-	<div ng-show="filteredTrips.length == 0">
-		<h2>Der er desværre ingen ture der matcher dine kriterier :-(</h2>
-	</div>
-
-  <div ng-repeat="trip in filteredTrips" class="trip">
-
-	<div class="type">
-	  <div class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</div>
-	</div>
-
-	<div class="info pointer" ng-click="showTrip(trip)">
-	  <span class="where" title="{{ trip.where }} - {{ trip.area | areaName }}">
-	  	<strong>{{ trip.where }}</strong> <small>{{ trip.area | areaName }}</small>
-	  </span>
-
-	  <div class="details">
-		{{ trip.when | date:'d/M/yyyy HH:mm' }}
-	  </div>
-	</div>
-
-	<div class="more">  
-
-	  <button  ng-show="!trip.participating" ng-click="join(trip)" class="btn 1btn-primary ng-class: {disabled: trip.participating}" title="Du deltager ikke, klik for at tilmelde">
-		<i class="icon-ok 1icon-white"></i>
-	  </button>
-	  <button ng-show="trip.participating" ng-click="leave(trip)"
-			  class="btn btn-success " title="Du deltager allerede, klik for at afmelde">
-		<i class="icon-remove 1icon-white"></i>
-	  </button>
-	</div> 
-
-	<div class="participants">
-	  <div class="count">{{ trip.participants.length }}</div>
-	  <div class="title">deltagere</div>
-	</div>
-
-	<div class="comments">
-	  <div class="count">{{ trip.comments.length }}</div>
-	  <div class="title">kommentarer</div>
-	</div>
-
-	
-  </div>
+<div class="promotion">
+	<h1>Kom med på hjul</h1>
+	<h3>Find en cykeltur du vil deltage i, eller del din egen!</h3>
 </div>
 
-<div class="span4">
-	<div class="menu" >
-		<h4>Hvad leder du efter?</h4>
-		<form class="form-stacked trip-filter">
-			<div class="control-group">
-				<div class="control-label"><label>Hvad:</label></div>
-				<div class="controls">
-					<select ng-model="filter.type">
-						<option value="">MTB og landevej</option>
-						<option value="MTB">MTB</option>
-						<option value="Road">Landevej</option>
-					</select>
-				</div>
-		  	</div>
-		  	<div class="control-group">
-				<div class="control-label"><label>Hvor:</label></div>
-				<div class="controls">
-					<select ng-model="filter.area">
-						<option value="">Alle steder</option>
-						<option ng-repeat="area in areas" value="{{ area.id }}">{{ area.name }}</option>
-					</select>
-				</div>
+<div class="center">
+	<div class="inner">
+		<div class="col4">
+			<h4>Kommende ture nær dig</h4>
+			<p>
+				Til højre kan du se et par kommende ture nær dig.<br />Tilmeld dig ved at trykke på <i class="icon-ok"></i>
+
+				<br/>
+				<br/>
+				Skal du selv ud og cykle en tur, og vil have andre med, så skynd dig <a href="#/tur/ny">at dele din tur her</a>!
+			</p>
+		</div>
+		<div class="col6">
+			<div ng-show="filteredTrips.length == 0">
+				<h2>Der er desværre ingen ture der matcher dine kriterier :-(</h2>
 			</div>
-		</form>
 
-	  	<div class="spacer"></div>
-
-		<h4>Vær med, del din tur!</h4>
-		<a href="/tur/ny" class="btn btn-info btn-large btn-full-width">
-	  		<i class="icon-share-alt icon-white"></i> Del tur
-		</a>
+			<div ng-include="'/partials/tripList.html'"></div>
+			
+			<div class="more-trips">
+				<a href="#/ture">Se flere ture</a>
+			</div>
+		</div>
 	</div>
-</div>
+
+	<!--</div>-->
+	<!--
+	<div class="span4">
+		<div class="menu" >
+			<h4>Hvad leder du efter?</h4>
+			<form class="form-stacked trip-filter">
+				<div class="control-group">
+					<div class="control-label"><label>Hvad:</label></div>
+					<div class="controls">
+						<select ng-model="filter.type">
+							<option value="">MTB og landevej</option>
+							<option value="MTB">MTB</option>
+							<option value="Road">Landevej</option>
+						</select>
+					</div>
+			  	</div>
+			  	<div class="control-group">
+					<div class="control-label"><label>Hvor:</label></div>
+					<div class="controls">
+						<select ng-model="filter.area">
+							<option value="">Alle steder</option>
+							<option ng-repeat="area in areas" value="{{ area.id }}">{{ area.name }}</option>
+						</select>
+					</div>
+				</div>
+			</form>
+
+		  	<div class="spacer"></div>
+
+			<h4>Vær med, del din tur!</h4>
+			<a href="#/tur/ny" class="btn btn-info btn-large btn-full-width">
+		  		<i class="icon-share-alt icon-white"></i> Del tur
+			</a>
+		</div>
+	</div>
+-->

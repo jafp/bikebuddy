@@ -5,44 +5,78 @@
   <title>bikebuddy - find en cykeltur</title>
   <link rel="icon" type="image/png" href="/static/img/bike-icon.png" />
   <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/static/build/bikebuddy.min.css"/>
+  <!--<link rel="stylesheet" href="/static/build/bikebuddy.min.css"/>-->
+  <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="/static/css/app.css" />
 </head>
 <body ng-controller="AppCtrl">
 
+<div class="outer">
+	<div class="header">
+		<div class="center">
+			<div class="inner">
+				<div class="col3">
+					<h1><a href="#/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
+				</div>
+				<div class="col7">
+					<div class="links">
+						<a href="#/ture">Ture</a>
+						<a href="#/">Artikler</a>
+						<a href="#/om">Om Bikebuddy</a>
+
+						<span ng-show="user">
+							<a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
+							<a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
+						</span>
+						<span ng-show="!user">
+							<a href="#/logind"><i class="icon-white icon-user"></i> Log ind</a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="main">
+		<div ng-view></div>
+	</div>
+</div>
+
+<!--
   <header>
-      <div class="container">
-        <div class="row">
-          <div class="span5">
-            <h1><a href="/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
-          </div>
-          <div class="span7">
-            <div class="links">
-              <a href="/">Ture</a>
-              <a href="/">Artikler</a>
-              <a href="/om">Om Bikebuddy</a>
+	  <div class="container">
+		<div class="row">
+		  <div class="span5">
+			<h1><a href="#/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
+		  </div>
+		  <div class="span7">
+			<div class="links">
+			  <a href="#/">Ture</a>
+			  <a href="#/">Artikler</a>
+			  <a href="#/om">Om Bikebuddy</a>
 
-              <span ng-show="user">
-                <a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
-                <a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
-              </span>
-              <span ng-show="!user">
-                <a href="/logind"><i class="icon-white icon-user"></i> Log ind</a>
-              </span>
-            </div>
-          </div>
-      </div>
-    </header>
+			  <span ng-show="user">
+				<a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
+				<a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
+			  </span>
+			  <span ng-show="!user">
+				<a href="#/logind"><i class="icon-white icon-user"></i> Log ind</a>
+			  </span>
+			</div>
+		  </div>
+	  </div>
+	</header>
 
-    <div class="container body">
-      <div class="row">
-        <div ng-view></div>
-      </div>
-      <div class="row">
-        <div class="span12 footer">
-          &copy; 2012 <a href="http://www.itbuster.dk">itbuster.dk</a> - <a href="/om">Om</a> - <a href="/hjaelp">Hjælp</a> - <a href="http://github.com/jafp/bikebuddy">GitHub</a>
-        </div>
-      </div>
-    </div>
+	<div class="container body">
+	  <div class="row">
+		<div ng-view></div>
+	  </div>
+	  <div class="row">
+		<div class="span12 footer">
+		  &copy; 2012 <a href="http://www.itbuster.dk">itbuster.dk</a> - <a href="#/om">Om</a> - <a href="#/hjaelp">Hjælp</a> - <a href="http://github.com/jafp/bikebuddy">GitHub</a>
+		</div>
+	  </div>
+	</div>
+  -->
 
   <script src="/static/lib/jquery.js"></script>
   <script src="/static/lib/underscore-min.js"></script>
@@ -50,6 +84,11 @@
   <script src="/static/lib/angular/angular.min.js"></script>
   <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
   <script src="/static/lib/datepicker/js/bootstrap-datepicker.js"></script>
-  <script src="/static/build/bikebuddy.min.js"></script>
+  
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/controllers.js"></script>
+  <script src="/static/js/directives.js"></script>
+  <script src="/static/js/filters.js"></script>
+  <script src="/static/js/services.js"></script>
 </body>
 </html>

@@ -1,23 +1,27 @@
-<div class="span12">
-	<h4><i class="icon-user"></i> Log ind</h4>
+<div class="center">
+	<div class="inner">
+		<div class="col10">
+			<h4><i class="icon-user"></i> Log ind</h4>
 
-	<div class="see-me well">
-		<p>
-			Har du ikke allerede en bruger? <a href="/ny-profil">Opret en her.</a>
-		</p>
+			<div class="see-me well">
+				<p>
+					Har du ikke allerede en bruger? <a href="#/ny-profil">Opret en her.</a>
+				</p>
+			</div>
+
+			<form class="form-nice" name="form" ng-submit="submit()" errors="user.errors">
+				<ul>
+					<li>
+						<input type="text" ng-model="user.email" placeholder="E-mail" />
+					</li>
+					<li>
+						<input type="password" ng-model="user.password" placeholder="Password" />
+					</li>
+					<li>
+						<input type="submit" class="btn btn-primary" value="Log ind" />
+					</li>
+				</ul>
+			</form>
+		</div>
 	</div>
-
-	<form class="form-nice" name="form" ng-submit="submit()" errors="user.errors">
-		<ul>
-			<li>
-				<input type="text" ng-model="user.email" placeholder="E-mail" />
-			</li>
-			<li>
-				<input type="password" ng-model="user.password" placeholder="Password" />
-			</li>
-			<li>
-				<input type="submit" class="btn btn-primary" value="Log ind" />
-			</li>
-		</ul>
-	</form>
 </div>

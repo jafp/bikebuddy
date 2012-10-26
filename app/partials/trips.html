@@ -1,0 +1,45 @@
+<div class="center">
+	<div class="inner">
+		<div class="col7">
+			<div ng-show="trips.length == 0">
+				<h2>Vi kunne ikke finde nogle ture der passer dine kriterier :-(</h2>
+				<div style="width:100%;text-align:center"><img src="/static/img/qm.png"/></div>
+			</div>
+			<div ng-include="'/partials/tripList.html'"></div>
+		</div>
+		<div class="col3">
+			<div class="menu" >
+				<h4>Hvad leder du efter?</h4>
+				<form class="form-stacked trip-filter">
+					<div class="control-group">
+						<div class="control-label"><label>Hvad:</label></div>
+						<div class="controls">
+							<select ng-model="filter.type">
+								<option value="">MTB og landevej</option>
+								<option value="MTB">MTB</option>
+								<option value="Road">Landevej</option>
+							</select>
+						</div>
+				  	</div>
+				  	<div class="control-group">
+						<div class="control-label"><label>Hvor:</label></div>
+						<div class="controls">
+							<select ng-model="filter.area">
+								<option value="">Alle steder</option>
+								<option ng-repeat="area in areas" value="{{ area.id }}">{{ area.name }}</option>
+							</select>
+						</div>
+					</div>
+				</form>
+				<!--
+			  	<div class="spacer"></div>
+
+				<h4>Vær med, del din tur!</h4>
+				<a href="#/tur/ny" class="btn btn-info btn-large btn-full-width">
+			  		<i class="icon-share-alt icon-white"></i> Del tur
+				</a>
+			-->
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,7 +1,105 @@
 'use strict';
 
-/* Controllers */
+/**
+ *
+ * Base controller with functions for joining and leaving trips.
+ *
+ */
+function BaseCtrl($scope, $rootScope, $http, $location, $flash) {
+	//var $http = $injector.get('$http'),
+	//	$rootScope = $injector.get('');
 
+	$scope.loadAll = function(params) {
+		$http.get('/api/trips', { params: params || {} }).success(function(data) {
+			var i, len, t;
+
+			// Set a flag on each trip if the current user are participating.
+			if ($rootScope.user) {
+				for (i = 0, len = data.trips.length; i < len; i++) {
+					t = data.trips[i];
+
+					if (_.contains(t.participants, $rootScope.user._id)) {
+						t.participating = true;
+					}
+				}
+			}	
+
+			$scope.trips = data.trips;
+		});
+	}	
+
+	/**
+	 * Filter function to filter each item in the list
+	 * of trips. Two conditions can be filtered on:
+	 * Type  (mtb/road) and region/location.
+	 */
+	$scope.listFilter = function(trip) {
+		var filter = $scope.filter;
+
+		if (filter) {
+			if (filter.area) {
+				if (!trip.area || trip.area !== filter.area) {
+					return false;
+				}
+			}
+
+			if (filter.type) {
+				if (!trip.type || trip.type.toLowerCase() !== filter.type.toLowerCase()) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Acknowledge that you participate in the given
+	 * trip.
+	 */
+	$scope.join = function(trip) {
+		if (!$scope.user) {
+			$location.path('/ny-profil');
+			$flash.put('reason', 'not-logged-in');
+		} else {
+			$http.post('/api/trips/' + trip._id + '/join', { user: $rootScope.user._id }).success(function(data) {
+				if (data.error) {
+					alert('Du kunne ikke tilmeldes turen :-(');
+				} else {
+					$scope.joinedWithSuccess();
+				}
+			});
+		}
+	}
+
+	/**
+	 * Leave the trip. 
+	 */
+	$scope.leave = function(trip) {
+		$http.post('/api/trips/' + trip._id + '/leave', { user: $scope.user._id }).success(function(data) {
+			if (data.error) {
+				alert('Du kunne ikke afmeldes turen :-(');
+			} else {
+				$scope.leavedWithSuccess();
+			}
+		});
+	}
+
+	$scope.joinedWithSuccess = function() {
+		$scope.loadAll();
+	}
+
+	$scope.leavedWithSuccess = function() {
+		$scope.loadAll();
+	}
+}
+BaseCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$flash'];
+
+/**
+ *
+ * Application wide controller
+ *
+ */
 function AppCtrl($scope, $rootScope, $http, $location, $route) {
 	$http.get('/api/users/session').success(function(data) {
 		$rootScope.user = data;
@@ -25,95 +123,19 @@ function AppCtrl($scope, $rootScope, $http, $location, $route) {
 }
 AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$route'];
 
-function IndexCtrl($scope, $rootScope, $location, $http, $flash) {
-	$scope.filter = { area: '', type: '' };
-	$scope.userCreated = $flash.get('user-created');
-
-	$scope.load = function() {
-		$http.get('/api/trips').success(function(data) {
-			var i, len, t;
-			// The trips are sorted server side on 'when' and '_id'.
-			// TODO: Should we do it client side instead?
-
-			// Set a flag on each trip if the current user are participating.
-			if ($rootScope.user) {
-				for (i = 0, len = data.length; i < len; i++) {
-					t = data[i];
-
-					if (_.contains(t.participants, $rootScope.user._id)) {
-						t.participating = true;
-					}
-				}
-			}	
-
-			$scope.trips = $scope.filteredTrips = _.filter(data, listFilter);
-		});
-	}	
-
-	$scope.load();
-
-	/**
-	 * Filter function to filter each item in the list
-	 * of trips. Two conditions can be filtered on:
-	 * Type  (mtb/road) and region/location.
-	 */
-	var listFilter = function(trip) {
-		var filter = $scope.filter;
-
-		if (filter.area) {
-			if (!trip.area || trip.area !== filter.area) {
-				return false;
-			}
-		}
-
-		if (filter.type) {
-			if (!trip.type || trip.type.toLowerCase() !== filter.type.toLowerCase()) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Filter the list of trips
-	 */
-	$scope.$watch('filter', function() {
-		if ($scope.trips) {
-			$scope.filteredTrips = _.filter($scope.trips, listFilter);
-		}	
-	}, true);
+/**
+ *
+ * Index controller.
+ *
+ */
+function IndexCtrl($scope, $rootScope, $location, $http, $flash, $controller) {
+	// Inherit to get the join/leave functionality
+	$controller(BaseCtrl, { $scope: $scope });
 	
-	/**
-	 * Acknowledge that you participate in the given
-	 * trip.
-	 */
-	$scope.join = function(trip) {
-		if (!$scope.user) {
-			$location.path('/ny-profil');
-			$flash.put('reason', 'not-logged-in');
-		} else {
-			$http.post('/api/trips/' + trip._id + '/join', { user: $rootScope.user._id }).success(function(data) {
-				if (data.error) {
-					alert('Du kunne ikke tilmeldes turen :-(');
-				} else {
-					load();
-				}
-			});
-		}
-	}
+	$scope.loadAll({limit:3});
 
-	/**
-	 * Leave the trip. 
-	 */
-	$scope.leave = function(trip) {
-		$http.post('/api/trips/' + trip._id + '/leave', { user: $scope.user._id }).success(function(data) {
-			if (data.error) {
-				alert('Du kunne ikke afmeldes turen :-(');
-			} else {
-				load();
-			}
-		});
+	$scope.joinedWithSuccess = $scope.leavedWithSuccess = function() {
+		$scope.loadAll({limit:3});
 	}
 
 	/**
@@ -122,8 +144,36 @@ function IndexCtrl($scope, $rootScope, $location, $http, $flash) {
 	$scope.showTrip = function(trip) {		
 		$location.path('/tur/' + trip._id);
 	}
+
 }
-IndexCtrl.$inject = ['$scope', '$rootScope', '$location', '$http', '$flash'];
+IndexCtrl.$inject = ['$scope', '$rootScope', '$location', '$http', '$flash', '$controller'];
+
+/**
+ *
+ * Trips controller.
+ * 
+ */
+function TripsCtrl($scope, $controller) {
+	var trips;
+
+	$controller(BaseCtrl, { $scope: $scope });
+	$scope.loadAll();
+
+	/**
+	 * Filter the list of trips
+	 */
+	$scope.$watch('filter', function() {
+		if ($scope.trips) {
+			if (!trips) {
+				trips = $scope.trips;
+			}
+
+			$scope.trips = _.filter(trips, $scope.listFilter);
+		}	
+	}, true);
+	
+}
+TripsCtrl.$inject = ['$scope', '$controller'];
 
 
 function TripCtrl($scope, $routeParams, $http, $location) {
@@ -136,7 +186,7 @@ function TripCtrl($scope, $routeParams, $http, $location) {
 				$scope.trip = data;
 			}) 
 			.error(function() {
-				$location.path('/');
+				$location.path('#/');
 			});
 	}
 }
@@ -174,7 +224,7 @@ function TripFormCtrl($scope, $http, $location, $flash) {
 				$scope.trip.errors = data.errors;
 			} else {
 				$flash.put('notice', 'trip-created');
-				$location.path('/tur/' + data._id);
+				$location.path('#/tur/' + data._id);
 			}
 		});
 	}

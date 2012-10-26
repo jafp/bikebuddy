@@ -17,6 +17,7 @@ var compressor = require('node-minify'),
 // Connect to MongoDB 
 mongoose.connect('mongodb://localhost/bikebuddy');
 
+/*
 new compressor.minify({
 	type: 'uglifyjs',
 	fileIn: [
@@ -35,7 +36,9 @@ new compressor.minify({
 		}
 	}
 });
+*/
 
+/*
 new compressor.minify({
 	type: 'yui-css',
 	fileIn: [
@@ -51,6 +54,7 @@ new compressor.minify({
 		}
 	}
 });
+*/
 
 // Configuration
 app.configure(function(){

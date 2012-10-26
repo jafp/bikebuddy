@@ -1,0 +1,35 @@
+<div ng-repeat="trip in trips" class="trip">
+	<div class="type">
+		<div class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</div>
+	</div>
+
+	<div class="info pointer" ng-click="showTrip(trip)">
+		<span class="where" title="{{ trip.where }} - {{ trip.area | areaName }}">
+	  		<strong>{{ trip.where }}</strong> <small>{{ trip.area | areaName }}</small>
+		</span>
+
+		<div class="details">
+			{{ trip.when | date:'d/M/yyyy HH:mm' }}
+		</div>
+	</div>
+
+	<div class="more">
+		<button  ng-show="!trip.participating" ng-click="join(trip)" class="btn 1btn-primary ng-class: {disabled: trip.participating}" title="Du deltager ikke, klik for at tilmelde">
+			<i class="icon-ok 1icon-white"></i>
+		</button>
+		<button ng-show="trip.participating" ng-click="leave(trip)"
+			  class="btn btn-success " title="Du deltager allerede, klik for at afmelde">
+			<i class="icon-remove 1icon-white"></i>
+		</button>
+	</div> 
+
+	<div class="participants">
+		<div class="count">{{ trip.participants.length }}</div>
+		<div class="title">deltagere</div>
+	</div>
+
+	<div class="comments">
+	  	<div class="count">{{ trip.comments.length }}</div>
+	  	<div class="title">kommentarer</div>
+	</div>
+</div>
