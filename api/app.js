@@ -3,9 +3,7 @@
  * Module dependencies.
  */
 
-var fs = require('fs'),
-	child_process = require('child_process'),
-	minify = require('../scripts/minify'),
+var compressor = require('node-minify'),
 	express = require('express'),
 	mongoose = require('mongoose'),
 	routes = require('./routes'),
@@ -19,7 +17,40 @@ var fs = require('fs'),
 // Connect to MongoDB 
 mongoose.connect('mongodb://localhost/bikebuddy');
 
-minify(__dirname + '/..', __dirname + '/../app/js/bikebuddy.min.js');
+new compressor.minify({
+	type: 'uglifyjs',
+	fileIn: [
+		__dirname + '/../app/js/app.js',
+		__dirname + '/../app/js/services.js',
+		__dirname + '/../app/js/filters.js',
+		__dirname + '/../app/js/directives.js',
+		__dirname + '/../app/js/controllers.js'
+	],
+	fileOut: __dirname + '/../app/build/bikebuddy.min.js',
+	callback: function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Javascript minified using UglifyJS');
+		}
+	}
+});
+
+new compressor.minify({
+	type: 'yui-css',
+	fileIn: [
+		__dirname + '/../app/lib/bootstrap/css/bootstrap.css',
+		__dirname + '/../app/css/app.css',
+	],
+	fileOut: __dirname + '/../app/build/bikebuddy.min.css',
+	callback: function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('CSS minified using UglifyJS');
+		}
+	}
+});
 
 // Configuration
 app.configure(function(){
