@@ -23,7 +23,9 @@ app.configure(function(){
 	app.set('view options', {
 		layout: false
 	});
-	
+
+	app.use('/static', express.static(__dirname + '/../app'));
+	app.use(app.router);
 	app.use(expressValidator);
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
@@ -32,19 +34,20 @@ app.configure(function(){
 		store: new RedisStore(),
 		secret: 'adldkfj82lasj'
 	}));
-
-	app.use('/static', express.static(__dirname + '/../app'));
-	app.use(app.router);
 });
 
 app.configure('development', function(){
 	app.set('port', 3000);
+	app.set('ssl required', false);
+
 	app.use(express.errorHandler({ 
 		dumpExceptions: true, showStack: true 
 	}));
 });
 
 app.configure('production', function(){
+	app.set('port', 27015);
+	app.set('ssl required', true);
 	app.use(express.errorHandler());
 });
 
