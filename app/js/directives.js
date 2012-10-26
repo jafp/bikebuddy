@@ -4,34 +4,35 @@
  * Directives 
  */
 
-angular.module('bb.directives', []).
-	directive('appVersion', ['version', function(version) {
-		return function(scope, elm, attrs) {
-			elm.text(version);
-		};
-	}])
+angular.module('bb.directives', [])
 
+	/** 
+	 * Datepicker directive. Opens when the input
+	 * field (or element it is applied to) is clicked.
+	 */
 	.directive('datepicker', function() {
+		var linker = function(scope, element, attrs, ngModel) {
+			if (!ngModel) return;
+
+			element = $(element);
+			
+			element.datepicker({
+				format: 'dd/mm/yyyy'
+			});
+
+			element.on('changeDate', function() {
+				scope.$apply(update);
+			});
+
+			function update() {
+				ngModel.$setViewValue(element.val());
+			}
+		}
+
 		return {
 			require: '?ngModel',
-			link: function(scope, element, attrs, ngModel) {
-				if (!ngModel) return;
-
-				element = $(element);
-				
-				element.datepicker({
-					format: 'dd/mm/yyyy'
-				});
-
-				element.on('changeDate', function() {
-					scope.$apply(update);
-				});
-
-				function update() {
-					ngModel.$setViewValue(element.val());
-				}
-			}
-	};
+			link: linker
+		}
 	})
 
 	/**
@@ -57,6 +58,10 @@ angular.module('bb.directives', []).
 		}
 	})
 
+	/**
+	 * Directive for handling error on forms.
+	 * TODO: Better documentation
+	 */
 	.directive('errors', function() {
 
 		var dict = {

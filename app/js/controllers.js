@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function AppCtrl($scope, $rootScope, $http, $location) {
+function AppCtrl($scope, $rootScope, $http, $location, $route) {
 	$http.get('/api/users/session').success(function(data) {
 		$rootScope.user = data;
 	});
@@ -14,17 +14,22 @@ function AppCtrl($scope, $rootScope, $http, $location) {
 	$scope.logout = function() {
 		$http.delete('/api/users/session').success(function() {
 			$rootScope.user = null;
-			$location.path('/longrandomurl');
+			if ($location.path() === '/') {
+				// Cause a reload of trips so that all "participating" markings are removed
+				$route.current.scope.load();
+			} else {
+				$location.path('/');
+			}
 		});
 	}
 }
-AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location'];
+AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$route'];
 
-function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
+function IndexCtrl($scope, $rootScope, $location, $http, $flash) {
 	$scope.filter = { area: '', type: '' };
 	$scope.userCreated = $flash.get('user-created');
 
-	var load = function() {
+	$scope.load = function() {
 		$http.get('/api/trips').success(function(data) {
 			var i, len, t;
 			// The trips are sorted server side on 'when' and '_id'.
@@ -45,7 +50,7 @@ function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 		});
 	}	
 
-	load();
+	$scope.load();
 
 	/**
 	 * Filter function to filter each item in the list
@@ -118,7 +123,7 @@ function IndexCtrl($rootScope, $scope, $location, $http, $flash) {
 		$location.path('/tur/' + trip._id);
 	}
 }
-IndexCtrl.$inject = ['$rootScope', '$scope', '$location', '$http', '$flash'];
+IndexCtrl.$inject = ['$scope', '$rootScope', '$location', '$http', '$flash'];
 
 
 function TripCtrl($scope, $routeParams, $http, $location) {
@@ -200,6 +205,7 @@ function UserFormCtrl($scope, $http, $flash, $rootScope, $location) {
 		});
 	};
 }
+UserFormCtrl.$inject = ['$scope', '$http', '$flash', '$rootScope', '$location'];
 
 function LoginCtrl($scope, $http, $location, $rootScope) {
 	$scope.user = {};
@@ -216,6 +222,4 @@ function LoginCtrl($scope, $http, $location, $rootScope) {
 		});
 	}
 }
-
-
-
+LoginCtrl.$inject = ['$scope', '$http', '$location', '$rootScope'];

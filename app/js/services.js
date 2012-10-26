@@ -5,7 +5,7 @@
 var services = angular.module('bb.services', [])
 	.value('version', '0.1')
 
-	.factory('User', function($http) {
+	.factory('User', ['$http', function($http) {
 		var baseUrl = '/api/users';
 
 		return {
@@ -13,9 +13,9 @@ var services = angular.module('bb.services', [])
 				return $http.put(baseUrl, user);
 			}
 		}
-	})
+	}])
 
-	.factory('$flash', function($cacheFactory) {
+	.factory('$flash', ['$cacheFactory', function($cacheFactory) {
 		var cache = {};
 
 		return {
@@ -47,4 +47,4 @@ var services = angular.module('bb.services', [])
 				return cache[key];
 			}
 		}
-	});
+	}]);

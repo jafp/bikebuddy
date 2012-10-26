@@ -2,13 +2,7 @@
 
 /* Filters */
 
-angular.module('bb.filters', []).
-  filter('interpolate', ['version', function(version) {
-    return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    }
-  }])
-
+angular.module('bb.filters', [])
   .filter('tripType', function() {
 
   	return function(text) {
@@ -22,7 +16,7 @@ angular.module('bb.filters', []).
   	}
   })
 
-  .filter('areaName', function($rootScope) {
+  .filter('areaName', ['$rootScope', function($rootScope) {
     return function(areaKey) {
       var area = _.find($rootScope.areas, function(area) {
         return area.id === areaKey;
@@ -30,4 +24,4 @@ angular.module('bb.filters', []).
 
       return area.name;
     }
-  });
+  }]);

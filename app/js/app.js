@@ -18,10 +18,9 @@ angular.module('bb', ['bb.filters', 'bb.services', 'bb.directives']).
 			.otherwise({redirectTo: '/'})
 
 	    $locationProvider.html5Mode(true);
-
 	 }])
 
-	.run(function($rootScope) {
+	.run(['$rootScope', function($rootScope) {
 		var ngView;
 
 		// Simple way of doing transitions betweens views
@@ -33,4 +32,4 @@ angular.module('bb', ['bb.filters', 'bb.services', 'bb.directives']).
 			ngView.fadeIn(200);
 		});
 
-	});
+	}]);

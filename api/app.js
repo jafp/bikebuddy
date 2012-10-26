@@ -3,7 +3,10 @@
  * Module dependencies.
  */
 
-var express = require('express'),
+var fs = require('fs'),
+	child_process = require('child_process'),
+	minify = require('../scripts/minify'),
+	express = require('express'),
 	mongoose = require('mongoose'),
 	routes = require('./routes'),
 	expressValidator = require('express-validator'),
@@ -16,6 +19,8 @@ var express = require('express'),
 // Connect to MongoDB 
 mongoose.connect('mongodb://localhost/bikebuddy');
 
+minify(__dirname + '/..', __dirname + '/../app/js/bikebuddy.min.js');
+
 // Configuration
 app.configure(function(){
 	app.set('views', __dirname + '/views');
@@ -24,7 +29,6 @@ app.configure(function(){
 		layout: false
 	});
 
-	
 	app.use(expressValidator);
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
@@ -34,7 +38,7 @@ app.configure(function(){
 		secret: 'adldkfj82lasj'
 	}));
 	app.use('/static', express.static(__dirname + '/../app'));
-	app.use(app.router);
+
 });
 
 app.configure('development', function(){
