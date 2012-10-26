@@ -76,7 +76,7 @@ exports.users = {
 			res.send(user);
 		});
 		*/
-		res.send(req.session.user);
+		res.send(req.session && req.session.user);
 	}
 }
 

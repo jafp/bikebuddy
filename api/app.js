@@ -24,8 +24,7 @@ app.configure(function(){
 		layout: false
 	});
 
-	app.use('/static', express.static(__dirname + '/../app'));
-	app.use(app.router);
+	
 	app.use(expressValidator);
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
@@ -34,6 +33,8 @@ app.configure(function(){
 		store: new RedisStore(),
 		secret: 'adldkfj82lasj'
 	}));
+	app.use('/static', express.static(__dirname + '/../app'));
+	app.use(app.router);
 });
 
 app.configure('development', function(){
