@@ -14,12 +14,20 @@ var userSchema = new Schema({
 		hash: String 
 	},
 	updatedAt: { type: Date, default: Date.now },
-	createdAt: Date
+	createdAt: Date,
+	club: String
 });
 
 userSchema.virtual('password').set(function(password) {
 	this.password_info.salt = generateSalt();
 	this.password_info.hash = encodePassword(password, this.password_info.salt);
+});
+
+userSchema.pre('save', function(next) {
+	if (!this.createdAt) {
+		this.createdAt = Date.now();
+	}
+	next();
 });
 
 /**

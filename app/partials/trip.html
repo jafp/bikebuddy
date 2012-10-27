@@ -1,32 +1,36 @@
-<div class="span12 trip-details">
-	<div class="row">
-		<div class="span12">
-			<div class="header">
-				<h4>{{ trip.type | tripType }} fra {{ trip.where }} 
-					<small><i class="icon-time"></i> {{ trip.when | date:'d/M/yyyy HH:mm' }}</small>
-					<small><i class="icon-user"></i> <strong>{{ trip.participants.length }}</strong> deltagere</small>
-				</h4>
-			</div>
+<div class="grid trip-details">
+	<div class="col6">
+		<div class="header">
+			<h4>
+				{{ trip.type | tripType }} fra {{ trip.city }}
+				<small><i class="icon-time"></i> {{ trip.when | date:'d/M/yyyy HH:mm' }}</small>
+				<small><i class="icon-user"></i> <strong>{{ trip.participants.length }}</strong> deltagere</small><br/>
 
-			<div class="participants-list">
-				<h5>Deltagere</h5>
-				<ul>
-					<li ng-repeat="participant in trip.participants">
-						{{ participant.name }} ({{ participant.email }})
-						<span class="host" ng-show="participant._id == trip.creator._id">
-							<small>Arrangøren</small>
+				<small>Mødested ved {{ trip.where }}</small><br/>
+			</h4>
+		</div>
+
+		<div ng-show="trip.creator == user">
+			Du er arrangør af denne tur. 
+		</div>
+	</div>
+	<div class="col6">
+		<div class="participants-list">
+			<h5>Deltagere</h5>
+
+			<div class="participant" ng-repeat="participant in trip.participants">
+				<img src="http://placehold.it/50x50" />
+				<div>
+					<strong>
+						<span ng-show="participant.user._id == trip.creator._id" class="label label-success" style="margin-right: 5px">
+							Arrangøren
 						</span>
-					</li>
-				</ul>
+						{{ participant.user.name }}
+					</strong> 
+					<span class="email">{{ participant.user.email }}<br/>
+					<small>Tilmeldt {{ participant.joinedAt | date:'dd-MM-yyyy HH:mm' }}</small>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	<!--
-	 <div class="row">
-	 	<div class="span6">
-	 		<h5><i class="icon-comment"></i> Kommentarer</h5>
-	 	</div>
-	 </div>
-	-->
 </div>

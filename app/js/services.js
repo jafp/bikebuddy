@@ -5,14 +5,29 @@
 var services = angular.module('bb.services', [])
 	.value('version', '0.1')
 
-	.factory('User', ['$http', function($http) {
-		var baseUrl = '/api/users';
-
+	.factory('$auth', ['$rootScope', '$location', '$http', '$q', function($rootScope, $location, $http, $q) {
+	
 		return {
-			create: function(user) {
-				return $http.put(baseUrl, user);
+			getCurrent: function() {
+				var defer = $q.defer();
+				if ($rootScope.user) {
+					defer.resolve($rootScope.user);
+				} else {
+					$http.get('/api/users/session').success(function(data) {
+						$rootScope.user = data;
+						defer.resolve($rootScope.user);
+					});
+				}
+				return defer.promise;
+			},
+
+			userRequired: function() {
+				if (!$rootScope.user) {
+					$location.path('/logind');
+				}
 			}
 		}
+
 	}])
 
 	.factory('$flash', ['$cacheFactory', function($cacheFactory) {

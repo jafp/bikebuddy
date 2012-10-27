@@ -91,17 +91,21 @@ exports.trips = {
 	create: function(req, res) {
 		var errors;
 
+		req.check('trip.city', 'required').notEmpty();
 		req.check('trip.where', 'required').notEmpty();
 		req.check('trip.when', 'required').notEmpty();
+		req.check('trip.description', 'required').notEmpty();
 		errors = req.validationErrors();
 
 		if (errors) {
 			res.send({ errors: errors });
+
 		} else {
 
 			var trip = new Trip(req.body.trip);
+
 			trip.creator = req.session.user._id;
-			trip.participants.push(req.session.user._id);
+			trip.participants.push({ user: req.session.user._id });
 
 			trip.save(function(err, trip) {
 				if (err) {
@@ -115,7 +119,7 @@ exports.trips = {
 	},
 
 	get: function(req, res) {
-		Trip.findById(req.params.id).populate('participants').populate('creator').exec( function(err, trip) {
+		Trip.findById(req.params.id).populate('participants.user').populate('creator').exec( function(err, trip) {
 			res.send(trip);
 		});
 	},
@@ -133,7 +137,7 @@ exports.trips = {
 			query.sort(sort);
 		}
 
-		query.sort('_id').exec(function(err, trips) {
+		query.sort('_id').populate('participants.user').populate('creator').exec(function(err, trips) {
 			res.send({ trips: trips });
 		});
 	},
@@ -147,7 +151,7 @@ exports.trips = {
 					if (err) {
 						res.send({error: 'user-not-found'});
 					} else {
-						trip.participants.push(user._id);
+						trip.participants.push({ user: user._id });
 						trip.save(function(err, trip) {
 							res.send(trip);
 						});
@@ -158,21 +162,25 @@ exports.trips = {
 	},
 
 	leave: function(req, res) {
-		console.log(req.params, req.body);
-		Trip.findById(req.params.id, function(err, trip) {
+		var idx;
+
+		Trip.findById(req.params.id).exec(function(err, trip) {
 			if (err) {
 				res.send({error: 'trip-not-found'});
 			} else {
-				User.findById(req.body.user, function(err, user) {
-					if (err) {
-						res.send({error: 'user-not-found'});
-					} else {
-						trip.participants.splice(trip.participants.indexOf(req.body.user), 1);
-						trip.save(function(err, trip) {
-							res.send(trip);
-						});
-						res.send(trip);
+				console.log(trip);
+				trip.participants.forEach( function(participant, index) {
+					if (participant.user == req.body.user) {
+						idx = index;
 					}
+				});
+
+				if (idx) {
+					trip.participants.splice(idx, 1);
+				}
+
+				trip.save(function(err, trip) {
+					res.send(trip);
 				});
 			}
 		});

@@ -11,16 +11,20 @@ function BaseCtrl($scope, $rootScope, $http, $location, $flash) {
 
 	$scope.loadAll = function(params) {
 		$http.get('/api/trips', { params: params || {} }).success(function(data) {
-			var i, len, t;
+			var i, len, t, p, user;
+
+			user = $rootScope.user;
 
 			// Set a flag on each trip if the current user are participating.
-			if ($rootScope.user) {
+			if (user) {
 				for (i = 0, len = data.trips.length; i < len; i++) {
 					t = data.trips[i];
 
-					if (_.contains(t.participants, $rootScope.user._id)) {
-						t.participating = true;
-					}
+					p = _.find(t.participants, function(p) {
+						return p.user._id === user._id;
+					});
+
+					t.participating = !!p;
 				}
 			}	
 
@@ -85,10 +89,24 @@ function BaseCtrl($scope, $rootScope, $http, $location, $flash) {
 		});
 	}
 
+
+	/**
+	 * Route to the given trip.
+	 */
+	$scope.showTrip = function(trip) {		
+		$location.path('/tur/' + trip._id);
+	}
+
+	/**
+	 * Callback when a user has joined a trip
+	 */
 	$scope.joinedWithSuccess = function() {
 		$scope.loadAll();
 	}
 
+	/**
+	 * Callback when a user has leaved a trip.
+	 */
 	$scope.leavedWithSuccess = function() {
 		$scope.loadAll();
 	}
@@ -100,10 +118,8 @@ BaseCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$flash'];
  * Application wide controller
  *
  */
-function AppCtrl($scope, $rootScope, $http, $location, $route) {
-	$http.get('/api/users/session').success(function(data) {
-		$rootScope.user = data;
-	});
+function AppCtrl($scope, $rootScope, $http, $location, $route, $auth) {
+	$auth.getCurrent();
 
 	$http.get('/api/areas').success(function(data) {
 		$rootScope.areas = data;
@@ -114,14 +130,14 @@ function AppCtrl($scope, $rootScope, $http, $location, $route) {
 			$rootScope.user = null;
 			if ($location.path() === '/') {
 				// Cause a reload of trips so that all "participating" markings are removed
-				$route.current.scope.load();
+				$route.current.scope.loadAll();
 			} else {
 				$location.path('/');
 			}
 		});
 	}
 }
-AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$route'];
+AppCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', '$route', '$auth'];
 
 /**
  *
@@ -137,14 +153,6 @@ function IndexCtrl($scope, $rootScope, $location, $http, $flash, $controller) {
 	$scope.joinedWithSuccess = $scope.leavedWithSuccess = function() {
 		$scope.loadAll({limit:3});
 	}
-
-	/**
-	 * Route to the given trip.
-	 */
-	$scope.showTrip = function(trip) {		
-		$location.path('/tur/' + trip._id);
-	}
-
 }
 IndexCtrl.$inject = ['$scope', '$rootScope', '$location', '$http', '$flash', '$controller'];
 
@@ -193,7 +201,8 @@ function TripCtrl($scope, $routeParams, $http, $location) {
 TripCtrl.$inject = ['$scope', '$routeParams', '$http', '$location'];
 
 
-function TripFormCtrl($scope, $http, $location, $flash) {
+function TripFormCtrl($scope, $http, $location, $flash, $auth) {
+	$auth.userRequired();
 
 	var reset = function() {
 		$scope.trip = { type: 'MTB', area: 'nordsjaelland-og-koebenhavn', time: '08:00' };
@@ -229,11 +238,13 @@ function TripFormCtrl($scope, $http, $location, $flash) {
 		});
 	}
 }
-TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash'];
+TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash', '$auth'];
 
 
-function ProfileCtrl() {
+function ProfileCtrl($auth) {
+	$auth.userRequired();
 }
+ProfileCtrl.$inject = ['$auth'];
 
 function AboutCtrl() {
 }

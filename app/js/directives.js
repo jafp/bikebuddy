@@ -68,7 +68,7 @@ angular.module('bb.directives', [])
 			'required': 'Udfyld venligst',
 			'invalid-email': 'Ugyldig e-mailadresse',
 			'email-already-in-use': 'Der findes allerede en bruger med den e-mail',
-			'invalid-login': 'Udgyldigt logind, prøv igen',
+			'invalid-login': 'Ugyldigt logind, prøv igen',
 			'password-not-confirmed': 'Password ikke gentaget rigtigt'
 		};
 

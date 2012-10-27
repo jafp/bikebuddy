@@ -13,25 +13,23 @@
 
 <div class="outer">
 	<div class="header">
-		<div class="center">
-			<div class="inner">
-				<div class="col3">
-					<h1><a href="#/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
-				</div>
-				<div class="col7">
-					<div class="links">
-						<a href="#/ture">Ture</a>
-						<a href="#/">Artikler</a>
-						<a href="#/om">Om Bikebuddy</a>
+		<div class="grid">
+			<div class="col4">
+				<h1><a href="#/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
+			</div>
+			<div class="col8">
+				<div class="links">
+					<a href="#/ture">Ture</a>
+					<a href="#/">Artikler</a>
+					<a href="#/om">Om Bikebuddy</a>
 
-						<span ng-show="user">
-							<a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
-							<a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
-						</span>
-						<span ng-show="!user">
-							<a href="#/logind"><i class="icon-white icon-user"></i> Log ind</a>
-						</span>
-					</div>
+					<span ng-show="user">
+						<a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
+						<a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
+					</span>
+					<span ng-show="!user">
+						<a href="#/logind"><i class="icon-white icon-user"></i> Log ind</a>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -41,54 +39,18 @@
 	</div>
 </div>
 
-<!--
-  <header>
-	  <div class="container">
-		<div class="row">
-		  <div class="span5">
-			<h1><a href="#/"><img src="/static/img/bike-medium.png"/> BikeBuddy</a></h1>
-		  </div>
-		  <div class="span7">
-			<div class="links">
-			  <a href="#/">Ture</a>
-			  <a href="#/">Artikler</a>
-			  <a href="#/om">Om Bikebuddy</a>
+<script src="/static/lib/jquery.js"></script>
+<script src="/static/lib/underscore-min.js"></script>
+<script src="/static/lib/moment.min.js"></script>
+<script src="/static/lib/angular/angular.min.js"></script>
+<script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/lib/datepicker/js/bootstrap-datepicker.js"></script>
 
-			  <span ng-show="user">
-				<a href=""><i class="icon-white icon-user"></i> {{ user.name }}</a>
-				<a href="" ng-click="logout()" class="logout"><small>(log ud)</small></a>
-			  </span>
-			  <span ng-show="!user">
-				<a href="#/logind"><i class="icon-white icon-user"></i> Log ind</a>
-			  </span>
-			</div>
-		  </div>
-	  </div>
-	</header>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/controllers.js"></script>
+<script src="/static/js/directives.js"></script>
+<script src="/static/js/filters.js"></script>
+<script src="/static/js/services.js"></script>
 
-	<div class="container body">
-	  <div class="row">
-		<div ng-view></div>
-	  </div>
-	  <div class="row">
-		<div class="span12 footer">
-		  &copy; 2012 <a href="http://www.itbuster.dk">itbuster.dk</a> - <a href="#/om">Om</a> - <a href="#/hjaelp">Hjælp</a> - <a href="http://github.com/jafp/bikebuddy">GitHub</a>
-		</div>
-	  </div>
-	</div>
-  -->
-
-  <script src="/static/lib/jquery.js"></script>
-  <script src="/static/lib/underscore-min.js"></script>
-  <script src="/static/lib/moment.min.js"></script>
-  <script src="/static/lib/angular/angular.min.js"></script>
-  <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/static/lib/datepicker/js/bootstrap-datepicker.js"></script>
-  
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/controllers.js"></script>
-  <script src="/static/js/directives.js"></script>
-  <script src="/static/js/filters.js"></script>
-  <script src="/static/js/services.js"></script>
 </body>
 </html>
