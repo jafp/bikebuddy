@@ -1,5 +1,68 @@
-<div class="span12">
-	<h4>Profil</h4>
+<div class="grid">
+	<div class="col12 profile-header">
+		<h4>Min profil</h4>
+		<img src="/static/img/userplaceholder.png" class="profile-image" tooltip tooltip-placement="bottom" rel="tooltip" title="Skift profilbillede"/>
+	</div> 
+	<div class="col12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">Mine ture</a></li>
+				<li><a href="#tab2" data-toggle="tab">Mine oplysninger</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<div class="well well-small">
+						Herunder kan du se hvilke ture du deltager i, og ture som du selv har oprettet.
+					</div>
 
-	<p>Du er ikke logget ind...</p>
+					<table class="table table-hover">
+						<colgroup>
+							<col style="width: 100px" />
+							<col style="width: 200px" />
+							<col />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>Type</th>
+								<th>Dato og tid</th>
+								<th>By</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="trip in trips">
+								<td><span class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</span></td>
+								<td>{{ trip.when | date:'dd-MM-yyyy HH:mm' }}</td>
+								<td>{{ trip.city }} <small>({{trip.where}})</small><span class="pull-right"><a href="#/tur/{{ trip._id }}">Se mere</a></span></td>
+							</tr>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab2">
+					<form class="form-nice">
+						<ul>
+							<li>
+								<label class="input-label">Navn <small>(påkrævet)</small>:</label>
+								<input type="text" ng-model="user.name"/>
+							</li>
+							<li>
+								<label class="input-label">E-mail <small>(påkrævet)</small>:</label>
+								<input type="text" ng-model="user.email"/>
+							</li>	
+							<li>
+								<label class="input-label">Klub:</label>
+								<input type="text" ng-model="user.club"/>
+							</li>
+							<li>
+								<label class="input-label">Bopæl:</label>
+								<input type="text" ng-model="user.location" />
+							</li>
+							<li>
+								<label class="input-label"></label>
+								<button class="btn">Gem oplysninger</button>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

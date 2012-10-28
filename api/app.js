@@ -123,6 +123,7 @@ app.get('/api/areas', api.areas.list);
 app.put('/api/users', api.users.create);
 app.get('/api/users', api.users.get);
 app.get('/api/users/session', api.users.currentUser);
+app.get('/api/users/session/trips', api.users.trips);
 app.post('/api/users/session', api.users.login);
 app.delete('/api/users/session', api.users.logout);
 

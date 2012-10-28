@@ -21,6 +21,17 @@ exports.users = {
 			res.send(trips);
 		});
 	},
+	trips: function(req, res) {
+		var userId = req.session.user._id;
+
+		Trip.find({ 'participants.user': userId }, function(err, trips) {
+			if (err) {
+				res.send({ error: err });
+			} else {
+				res.send({ trips: trips });
+			}
+		});
+	},
 	create: function(req, res) {
 		var errors;
 

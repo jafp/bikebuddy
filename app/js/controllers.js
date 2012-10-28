@@ -276,10 +276,19 @@ function TripFormCtrl($scope, $http, $location, $flash, $auth) {
 TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash', '$auth'];
 
 
-function ProfileCtrl($auth) {
+function ProfileCtrl($scope, $rootScope, $http, $auth) {
 	$auth.userRequired();
+	$scope.user = angular.copy($rootScope.user);
+
+	$http.get('/api/users/session/trips').success(function(data) {
+		if (data.error) {
+			// TODO: Handle error
+		} else {
+			$scope.trips = data.trips;
+		}
+	});
 }
-ProfileCtrl.$inject = ['$auth'];
+ProfileCtrl.$inject = ['$scope','$rootScope','$http','$auth'];
 
 function AboutCtrl() {
 }
@@ -313,7 +322,7 @@ function LoginCtrl($scope, $http, $location, $rootScope) {
 					{param: 'user.password', msg: ''}];
 			} else {
 				$rootScope.user = data.user;
-				$location.path('/');
+				$location.path('/profil');
 			}
 		});
 	}

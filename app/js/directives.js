@@ -35,6 +35,16 @@ angular.module('bb.directives', [])
 		}
 	})
 
+	.directive('tooltip', function() {
+		var linker = function(scope, element, attrs) {
+			element.tooltip({ placement: attrs.tooltipPlacement || 'top' });
+		}
+
+		return {
+			link: linker	
+		}
+	})
+
 	/**
 	 * Directive for generating options for the 
 	 * time select input.

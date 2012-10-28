@@ -14,15 +14,15 @@
 	</div>
 
 	<div class="more">
-		<button  ng-show="!trip.participating" ng-click="join(trip)" class="btn ng-class: {disabled: trip.participating}" title="Du deltager ikke, klik for at tilmelde">
+		<button  ng-show="!trip.participating" ng-click="join(trip)" class="btn ng-class: {disabled: trip.participating}" title="Du deltager ikke, klik for at tilmelde" rel="tooltip" tooltip>
 			<i class="icon-ok 1icon-white"></i>
 		</button>
 		<button ng-show="trip.participating && trip.creator._id != user._id" ng-click="leave(trip)"
-			  class="btn btn-success " title="Du deltager allerede, klik for at afmelde">
+			  class="btn btn-success " title="Du deltager allerede, klik for at afmelde"rel="tooltip" tooltip>
 			<i class="icon-remove 1icon-white"></i>
 		</button>
 		<button ng-show="trip.participating && trip.creator._id == user._id" ng-disabled="true"
-			  class="btn btn-success " title="Du har selv oprettet denne tur, og kan derfor ikke melde dig fra den!">
+			  class="btn btn-success" title="Du har selv oprettet denne tur, og kan derfor ikke melde dig fra den!" rel="tooltip" tooltip>
 			<i class="icon-remove 1icon-white"></i>
 		</button>
 	</div> 

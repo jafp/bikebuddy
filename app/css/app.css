@@ -24,6 +24,7 @@ html, body {
 	position: fixed;
   	top: 0;
   	left: 0;
+  	right: 0;
   	width: 100%;
   	padding: 0px 0;
   	height: 90px;
@@ -279,6 +280,7 @@ html, body {
 	background-image: linear-gradient(to bottom, white, #E6E6E6);
 	background-image: -moz-linear-gradient(top, white, #E6E6E6);
 	background-repeat: repeat-x;
+	border-radius: 4px 4px 0 0;
 }
 
 .smartbox-inner {
@@ -500,3 +502,19 @@ html, body {
 	float: right;
 }
 
+
+.profile-header {
+	position: relative;
+}
+
+.profile-image {
+	max-height: 60px;
+	border-radius: 4px;
+}
+
+.profile-header > .profile-image {
+	top: 0;
+	right: 0;
+	position: absolute;
+	cursor: pointer;
+}

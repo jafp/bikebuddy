@@ -9,19 +9,14 @@
 				</small>
 
 				<span class="pull-right label label-success" ng-show="trip.participating">
-					Du deltager :-)
+					Du deltager
 				</span>
 				<span class="pull-right label label-warning" ng-show="!trip.participating">
-					Du deltager ikke :-(
+					Du deltager ikke
 				</span>
 			</h4>
 			
 		</div>
-	<!--
-		<div ng-show="trip.creator._id == user._id" class="well">
-			<i class="icon-star"></i> Du er arrangør af denne tur, og kan derfor <a href="">ændre den her.</a>
-		</div>
-	-->
 	</div>
 	<div class="col12">
 		<div class="tabbable">
@@ -33,17 +28,18 @@
 			  		<a href="#tab2" data-toggle="tab">Deltagere</a>
 			  	</li>
 
-				<div class="btn-group pull-right">
+				<div class="btn-group pull-right" ng-show="!trip.myTrip">
 					<div class="btn" ng-disabled="trip.myTrip || trip.participating" ng-click="join(trip)"><i class="icon-ok"></i> Tilmeld</div>
 					<div class="btn" ng-disabled="trip.myTrip || !trip.participating" ng-click="leave(trip)"><i class="icon-remove"></i> Afmeld</div>
 				</div>
 
-				<div class="btn pull-right" style="margin-right: 10px" ng-show="trip.myTrip">
-					<i class="icon-pencil"></i> Rediger
-				</div>
-
-				<div class="btn btn-danger pull-right" style="margin-right: 10px" ng-show="trip.myTrip">
-					<i class="icon-remove icon-white"></i> Aflys
+				<div class="btn-group pull-right" ng-show="trip.myTrip">
+					<div class="btn">
+						<i class="icon-pencil"></i> Rediger
+					</div>
+					<div class="btn" >
+						<i class="icon-remove icon-white"></i> Aflys
+					</div>
 				</div>
 			</ul>
 			<div class="tab-content">
@@ -89,7 +85,7 @@
 				</div>
 				<div class="tab-pane" id="tab2">
 					<div class="participant" ng-repeat="participant in trip.participants">
-						<img src="http://placehold.it/80x80" style="border-radius:4px"/>
+						<img src="/static/img/userplaceholder.png" class="profile-image"/>
 						<div>
 							<strong>{{ participant.user.name }}</strong> 
 							<br/>
@@ -100,74 +96,4 @@
 			</div>
 		</div>
 	</div>
-	<!--
-	<div class="col12">
-		<div class="menu menu-slim">
-			<div class="comment-list">
-				<div class="comment" ng-repeat="comment in comments">
-					<div class="content">
-						<div class="info">
-							<strong><i class="icon-comment"></i> {{ comment.author.name }}</strong><br/>
-							<small>Kommenterede {{ comment.createdAt }}</small>
-						</div>
-						<div class="message">
-							{{ comment.message }}
-						</div>
-					</div>
-				</div>
-
-				<div ng-show="comments.length == 0">
-					Whohu! Vær den første til at skrive en kommentar!
-				</div>
-
-				<!--
-				<div class="comment">
-					<div class="content">
-						<div class="info">
-							<strong><i class="icon-comment"></i> Jacob Aslund</strong><br/>
-							<small>Kommenterede den 27. oktober 2012 kl. 12.04</small>
-						</div>
-						<div class="message">
-							<p>Hust varmt tøj da det efterhånden er ved at være godt koldt uden for!</p>
-						</div>
-					</div>
-				</div>
-				<div class="comment">
-					<div class="content">
-						<div class="info">
-							<strong><i class="icon-comment"></i> Charlotte Friis</strong><br/>
-							<small>Kommenterede den 27. oktober 2012 kl. 20.04</small>
-						</div>
-						<div class="message">
-							<p>Jeg har ikke nogle varme cykelbukser, så jeg må hellere købe en hel masse cykeltøj, veste, huer, hatte...alt!</p>
-						</div>
-					</div>
-				</div>
-			-->
-			<!--
-			</div>
-			<div class="comment-form">
-				<form name="commentForm" ng-submit="sendComment()">
-					<textarea placeholder="Skriv en kommentar" ng-model="comment.message"></textarea>
-					<button class="btn btn-info"><i class="icon-comment icon-white"></i> Send</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="col12">
-		<div class="menu menu-slim participants-list">
-			<h5><i class="icon-user"></i> Deltagere <small><strong>{{ trip.participants.length }}</strong> deltagere</small></h5>
-
-			<div class="participant" ng-repeat="participant in trip.participants">
-				<img src="http://placehold.it/50x50" style="border-radius:4px"/>
-				<div>
-					
-					<strong>{{ participant.user.name }}</strong> 
-					<br/>
-					<small>Tilmeldt {{ participant.joinedAt | date:'dd-MM-yyyy HH:mm' }}</small>
-				</div>
-			</div>
-		</div>
-	</div>
--->
 </div>
