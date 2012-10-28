@@ -184,21 +184,56 @@ function TripsCtrl($scope, $controller) {
 TripsCtrl.$inject = ['$scope', '$controller'];
 
 
-function TripCtrl($scope, $routeParams, $http, $location) {
-	if (!$routeParams.id) {
+function TripCtrl($scope, $rootScope, $routeParams, $http, $location, $controller) {
+	var id = $routeParams.id;
+
+	$controller(BaseCtrl, { $scope: $scope });
+	$scope.comment = {};
+
+	$scope.leavedWithSuccess = $scope.joinedWithSuccess = function() {
+		if (!$rootScope.user) {
+			$location.path('/ny-profil');
+		} else {
+			$scope.load();
+		}
+	}
+
+	$scope.load = function() {
+		$http.get('/api/trips/' + id).success(function(data) {
+			if (data.trip) {
+				$scope.trip = data.trip;
+				$scope.trip.myTrip = $scope.trip.creator._id === $rootScope.user._id;
+				$scope.comments = data.trip.comments;
+
+
+
+				if (_.find($scope.trip.participants, function(p) { return p.user._id === $rootScope.user._id; })) {
+					$scope.trip.participating = true;
+				}
+			} else {
+				$location.path('/');
+			}
+		});
+	}
+
+	$scope.sendComment = function() {
+		$http.post('/api/trips/' + id + '/comment', { comment: $scope.comment }).success(function(data) {
+			if (data.trip) {
+				$scope.comment = {};
+				$scope.load();
+			} else {
+				// error, handle it
+			}
+		});
+	}
+
+	if (!id) {
 		$location.path('/');
-	
 	} else {
-		$http.get('/api/trips/' + $routeParams.id)
-			.success(function(data) {
-				$scope.trip = data;
-			}) 
-			.error(function() {
-				$location.path('#/');
-			});
+		$scope.load();
 	}
 }
-TripCtrl.$inject = ['$scope', '$routeParams', '$http', '$location'];
+TripCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$http', '$location', '$controller'];
 
 
 function TripFormCtrl($scope, $http, $location, $flash, $auth) {

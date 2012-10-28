@@ -119,8 +119,35 @@ exports.trips = {
 	},
 
 	get: function(req, res) {
-		Trip.findById(req.params.id).populate('participants.user').populate('creator').exec( function(err, trip) {
-			res.send(trip);
+		Trip.findById(req.params.id)
+			.populate('participants.user')
+			.populate('creator')
+			.populate('comments.author')
+			.exec( function(err, trip) {
+			res.send({ trip: trip });
+		});
+	},
+
+	comment: function(req, res) {
+		var id = req.param('id'),
+			comment = req.body.comment;
+
+		Trip.findById(id, function(err, trip) {
+			if (err) {
+				res.send({ error: true});
+			} else {
+
+				comment.author = req.session.user._id;
+				trip.comments.push(comment);
+
+				trip.save(function(err, trip) {
+					if (err) {
+						res.send({ error: true });
+					} else {
+						res.send({trip: trip});
+					}
+				});
+			}
 		});
 	},
 

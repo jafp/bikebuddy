@@ -112,10 +112,11 @@ app.get('/partials/:name', routes.partials);
 // Testing only!
 app.get('/api/trips/testData', api.trips.testData);
 app.get('/api/trips', api.trips.list);
-app.post('/api/trips/:id/join', api.trips.join);
-app.post('/api/trips/:id/leave', api.trips.leave);
+app.post('/api/trips/:id/join', requiresLogin, api.trips.join);
+app.post('/api/trips/:id/leave', requiresLogin, api.trips.leave);
+app.post('/api/trips/:id/comment', requiresLogin, api.trips.comment);
 app.get('/api/trips/:id', api.trips.get);
-app.put('/api/trips', api.trips.create);
+app.put('/api/trips', requiresLogin, api.trips.create);
 
 app.get('/api/areas', api.areas.list);
 

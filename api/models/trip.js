@@ -15,8 +15,8 @@ var tripSchema = new Schema({
 	
 	comments: [{ 
 		author: { type: Schema.Types.ObjectId, ref: 'User' },
-		comment: String, 
-		when: { type: Date, default: Date.now } 
+		message: String, 
+		createdAt: { type: Date, default: Date.now } 
 	}],
 
 	participants: [ { 

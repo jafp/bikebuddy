@@ -24,4 +24,10 @@ angular.module('bb.filters', [])
 
       return area.name;
     }
-  }]);
+  }])
+
+  .filter('humanize', function() {
+    return function(date) {
+      return moment(new Date(date)).fromNow();
+    }
+  });
