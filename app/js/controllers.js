@@ -217,14 +217,18 @@ function TripCtrl($scope, $rootScope, $routeParams, $http, $location, $controlle
 	}
 
 	$scope.sendComment = function() {
-		$http.post('/api/trips/' + id + '/comment', { comment: $scope.comment }).success(function(data) {
-			if (data.trip) {
-				$scope.comment = {};
-				$scope.load();
-			} else {
-				// error, handle it
-			}
-		});
+		if (!$scope.comment.message) {
+			alert('Du kan da ikke sende tomme kommentarer!');
+		} else {
+			$http.post('/api/trips/' + id + '/comment', { comment: $scope.comment }).success(function(data) {
+				if (data.trip) {
+					$scope.comment = {};
+					$scope.load();
+				} else {
+					// error, handle it
+				}
+			});
+		}
 	}
 
 	if (!id) {
@@ -268,7 +272,7 @@ function TripFormCtrl($scope, $http, $location, $flash, $auth) {
 				$scope.trip.errors = data.errors;
 			} else {
 				$flash.put('notice', 'trip-created');
-				$location.path('#/tur/' + data._id);
+				$location.path('/tur/' + data._id);
 			}
 		});
 	}
@@ -279,6 +283,35 @@ TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash', '$auth'];
 function ProfileCtrl($scope, $rootScope, $http, $auth) {
 	$auth.userRequired();
 	$scope.user = angular.copy($rootScope.user);
+
+	$scope.changeProfilePicture = function() {
+		var form = $('#profile-picture-form'),
+			input = $('#profile-picture-input'),
+			onComplete;
+
+		onComplete = function(response) {
+			if (response.error) {
+
+			} else {
+				// update user
+				$rootScope.user = response.user;
+
+				// UI: Update image
+				$('.profile-image').attr('src', $rootScope.user.imageThumbUrl);
+			}
+		}
+
+		form.iframePostForm({ complete: onComplete });
+
+		// UI: Trigger open of the file input
+		input.trigger('click');
+
+		input.on('change', function() {
+			form.trigger('submit');
+		});
+	}
+
+
 
 	$http.get('/api/users/session/trips').success(function(data) {
 		if (data.error) {
@@ -305,7 +338,7 @@ function UserFormCtrl($scope, $http, $flash, $rootScope, $location) {
 			} else {
 				$rootScope.user = data;
 				$flash.put('user-created', true);
-				$location.path('/');
+				$location.path('/profil');
 			}
 		});
 	};

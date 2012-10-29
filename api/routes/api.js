@@ -1,5 +1,7 @@
 
-var Area = require('../models/area.js'),
+var fs = require('fs'),
+	gm = require('gm'),
+	Area = require('../models/area.js'),
 	User = require('../models/user.js'),
 	Trip = require('../models/trip.js'),
 	util = require('util');
@@ -81,13 +83,76 @@ exports.users = {
 		res.send({ loggedOut: true });
 	},
 	currentUser: function(req, res) {
-		// Only for testing on my local laptop
-		/*
-		User.authenticate('j@p.dk', '1234', function(user) {
-			res.send(user);
-		});
-		*/
 		res.send(req.session && req.session.user);
+	},
+	/**
+	 * Action for uploading profile pictures.
+	 * The original picture is upload together with a thumbnail of size 60x60 px.
+	 */
+	picture: function(req, res) {
+		var image = req.files.image,
+			acceptedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
+			dirPath = __dirname + '/../../app/users/' + req.session.user._id + '/',
+			filename, original, thumb,
+			extension,
+			i;
+
+		var urlForImage = function(image) {
+			return '/static/users/' + req.session.user._id + '/' + image;
+		}
+
+		if (acceptedTypes.indexOf(image.type) !== -1) {
+			if (image.size > 4000000) {
+				res.send({ error: 'too-big' });
+			} else {
+				// The path
+				
+				i = image.name.lastIndexOf('.');
+				extension = image.name.substring(i);
+
+				original = dirPath + 'original' + extension;
+				thumb = dirPath + 'thumb' + extension;
+
+				if (!fs.existsSync(dirPath)) {
+					fs.mkdirSync(dirPath);
+				}
+
+				// Move from temp. dir
+				fs.renameSync(image.path, original);
+
+				// Generate thumbnail
+				gm(original).thumb(60, 60, thumb, 100, function(err, stdout, stderr, command) {
+					if (err) {
+						res.send({ error: 'thumb' });
+					} else {
+
+						// Save the image in the users profile
+						User.findById(req.session.user._id, function(err, user) {
+							if (err) {
+								res.send({error: 'load-user'});
+							} else {
+
+								user.imageUrl = urlForImage('original' + extension);
+								user.imageThumbUrl = urlForImage('thumb' + extension);
+
+								user.save(function(err, user) {
+									if (err) {
+										res.send({ error: 'user-save', msg: err });
+									} else {
+										// Update session user
+										req.session.user = user;
+										res.send({ user: user });
+									}
+								});
+							}
+						});
+					}
+				});
+
+			}
+		} else {
+			res.send({ error: 'wrong-format'});
+		}
 	}
 }
 
@@ -175,6 +240,8 @@ exports.trips = {
 			query.sort(sort);
 		}
 
+		query.where('when').gt(Date.now());
+
 		query.sort('_id').populate('participants.user').populate('creator').exec(function(err, trips) {
 			res.send({ trips: trips });
 		});
@@ -206,7 +273,6 @@ exports.trips = {
 			if (err) {
 				res.send({error: 'trip-not-found'});
 			} else {
-				console.log(trip);
 				trip.participants.forEach( function(participant, index) {
 					if (participant.user == req.body.user) {
 						idx = index;
@@ -222,38 +288,5 @@ exports.trips = {
 				});
 			}
 		});
-	},
-
-	/**
-	 * API call for generating some random test data.
-	 */
-	testData: function(req, res) {
-		var created = [],
-			areas = Area.list(),
-			names = ['Skovbrynet', 'Holte', 'Tisvilde', 'Roskilde', 'Møns Klint'],
-			intensities = ['EASY', 'MEDIUM', 'HARD', 'PRO'],
-			types = ['MTB', 'ROAD'],
-			trip;
-
-		Trip.remove({}, function() {});
-
-		for (var i = 0; i < 10; i++) {
-			var t = new Trip({
-				where: randomItem(names),
-				area: randomItem(areas, 'id'),
-				when: new Date(2012, 10, 22, 10, 23, 00),
-				type: randomItem(types),
-				intensity: randomItem(intensities)
-			});
-
-			t.save(function(err) {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}
-
-		res.send('OK');
-		res.send([]);
 	}
 }

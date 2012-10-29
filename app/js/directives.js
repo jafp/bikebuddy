@@ -45,6 +45,21 @@ angular.module('bb.directives', [])
 		}
 	})
 
+	.directive('profilePicture', function() {
+		return {
+			link: function(scope, element, attrs) {
+				var user = scope.$eval(attrs.profilePicture),
+					src = '/static/img/userplaceholder.png';
+
+				if (user && user.imageThumbUrl) {
+					src = user.imageThumbUrl;
+				}
+
+				element.attr('src', src);
+			}
+		}
+	})
+
 	/**
 	 * Directive for generating options for the 
 	 * time select input.

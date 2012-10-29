@@ -15,7 +15,11 @@ var userSchema = new Schema({
 	},
 	updatedAt: { type: Date, default: Date.now },
 	createdAt: Date,
-	club: String
+	club: String,
+	location: String,
+
+	imageUrl: String,
+	imageThumbUrl: String
 });
 
 userSchema.virtual('password').set(function(password) {

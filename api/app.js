@@ -109,8 +109,8 @@ app.get('/partials/:name', routes.partials);
 
 // JSON API
 
-// Testing only!
-app.get('/api/trips/testData', api.trips.testData);
+app.get('/api/areas', api.areas.list);
+
 app.get('/api/trips', api.trips.list);
 app.post('/api/trips/:id/join', requiresLogin, api.trips.join);
 app.post('/api/trips/:id/leave', requiresLogin, api.trips.leave);
@@ -118,13 +118,12 @@ app.post('/api/trips/:id/comment', requiresLogin, api.trips.comment);
 app.get('/api/trips/:id', api.trips.get);
 app.put('/api/trips', requiresLogin, api.trips.create);
 
-app.get('/api/areas', api.areas.list);
-
 app.put('/api/users', api.users.create);
 app.get('/api/users', api.users.get);
 app.get('/api/users/session', api.users.currentUser);
 app.get('/api/users/session/trips', api.users.trips);
 app.post('/api/users/session', api.users.login);
+app.post('/api/users/session/picture', api.users.picture);
 app.delete('/api/users/session', api.users.logout);
 
 // redirect all others to the index (HTML5 history)

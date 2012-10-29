@@ -1,7 +1,7 @@
 <div class="grid">
 	<div class="col12 profile-header">
 		<h4>Min profil</h4>
-		<img src="/static/img/userplaceholder.png" class="profile-image" tooltip tooltip-placement="bottom" rel="tooltip" title="Skift profilbillede"/>
+		<img profile-picture="user" class="profile-image" tooltip tooltip-placement="bottom" rel="tooltip" title="Skift profilbillede" ng-click="changeProfilePicture()" />
 	</div> 
 	<div class="col12">
 		<div class="tabbable">
@@ -34,25 +34,30 @@
 								<td>{{ trip.when | date:'dd-MM-yyyy HH:mm' }}</td>
 								<td>{{ trip.city }} <small>({{trip.where}})</small><span class="pull-right"><a href="#/tur/{{ trip._id }}">Se mere</a></span></td>
 							</tr>
+							<tr ng-show="trips.length == 0">
+								<td colspan="3">
+									<i>Du er ikke telmedt nogle ture! <a href="#/ture">Find nogle her</a></i>
+								</td>
+							</tr>
 					</table>
 				</div>
 				<div class="tab-pane" id="tab2">
 					<form class="form-nice">
 						<ul>
 							<li>
-								<label class="input-label">Navn <small>(påkrævet)</small>:</label>
+								<label class="input-label">Navn</label>
 								<input type="text" ng-model="user.name"/>
 							</li>
 							<li>
-								<label class="input-label">E-mail <small>(påkrævet)</small>:</label>
+								<label class="input-label">E-mail</label>
 								<input type="text" ng-model="user.email"/>
 							</li>	
 							<li>
-								<label class="input-label">Klub:</label>
+								<label class="input-label">Klub</label>
 								<input type="text" ng-model="user.club"/>
 							</li>
 							<li>
-								<label class="input-label">Bopæl:</label>
+								<label class="input-label">Bopæl</label>
 								<input type="text" ng-model="user.location" />
 							</li>
 							<li>
@@ -66,3 +71,6 @@
 		</div>
 	</div>
 </div>
+<form id="profile-picture-form" enctype="multipart/form-data" method="post" action="/api/users/session/picture">
+	<input type="file" id="profile-picture-input" name="image"/>
+</form>

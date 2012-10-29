@@ -4,8 +4,8 @@
 			<h4>
 				{{ trip.type | tripType }} fra {{ trip.city }}
 				<small>
-					<i class="icon-time"></i> <strong>Tidspunkt:</strong> {{ trip.when | date:'d/M/yyyy HH:mm' }}
-					<strong><i class="icon-globe"></i> Mødested:</strong> {{ trip.where }}
+					<!--<i class="icon-time"></i>--> <strong>Tidspunkt:</strong> {{ trip.when | date:'d/M/yyyy HH:mm' }}
+					<strong><!--<i class="icon-globe"></i>--> Mødested:</strong> {{ trip.where }}
 				</small>
 
 				<span class="pull-right label label-success" ng-show="trip.participating">
@@ -61,7 +61,7 @@
 						<div class="smartbox-inner">
 							<div class="comment" ng-repeat="comment in comments">
 								<div class="quotes">
-									{{ $index + 1}}
+									<img profile-picture="comment.author" class="profile-image" />
 								</div>
 								<div class="content">
 									<div class="info">
@@ -85,7 +85,7 @@
 				</div>
 				<div class="tab-pane" id="tab2">
 					<div class="participant" ng-repeat="participant in trip.participants">
-						<img src="/static/img/userplaceholder.png" class="profile-image"/>
+						<img profile-picture="participant.user" src="" class="profile-image"/>
 						<div>
 							<strong>{{ participant.user.name }}</strong> 
 							<br/>
