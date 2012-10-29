@@ -280,24 +280,28 @@ function TripFormCtrl($scope, $http, $location, $flash, $auth) {
 TripFormCtrl.$inject = ['$scope', '$http', '$location', '$flash', '$auth'];
 
 
-function ProfileCtrl($scope, $rootScope, $http, $auth) {
+function ProfileCtrl($scope, $rootScope, $http, $auth, $dialog) {
 	$auth.userRequired();
 	$scope.user = angular.copy($rootScope.user);
 
 	$scope.changeProfilePicture = function() {
-		var form = $('#profile-picture-form'),
+		var image = $('.profile-image'),
+			form = $('#profile-picture-form'),
 			input = $('#profile-picture-input'),
 			onComplete;
 
 		onComplete = function(response) {
 			if (response.error) {
+				
+				$dialog.message('Åh åh!', 'Vi kunne desværre ikke gemme dit billede. Prøv evt. igen.');
+				image.attr('src', $rootScope.user.imageThumbUrl || '/static/img/userplaceholder.png');
 
 			} else {
 				// update user
 				$rootScope.user = response.user;
 
 				// UI: Update image
-				$('.profile-image').attr('src', $rootScope.user.imageThumbUrl);
+				image.attr('src', $rootScope.user.imageThumbUrl);
 			}
 		}
 
@@ -307,6 +311,9 @@ function ProfileCtrl($scope, $rootScope, $http, $auth) {
 		input.trigger('click');
 
 		input.on('change', function() {
+			// UI: Show loading
+			image.attr('src', '/static/img/ajax-loader.gif');
+
 			form.trigger('submit');
 		});
 	}
@@ -321,7 +328,7 @@ function ProfileCtrl($scope, $rootScope, $http, $auth) {
 		}
 	});
 }
-ProfileCtrl.$inject = ['$scope','$rootScope','$http','$auth'];
+ProfileCtrl.$inject = ['$scope','$rootScope','$http','$auth','$dialog'];
 
 function AboutCtrl() {
 }

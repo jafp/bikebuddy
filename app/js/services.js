@@ -62,4 +62,42 @@ var services = angular.module('bb.services', [])
 				return cache[key];
 			}
 		}
+	}])
+
+	.factory('$dialog', ['$http', '$controller', '$rootScope', '$compile', function($http, $controller, $rootScope, $compile) {
+		var template;
+
+		function DialogCtrl($scope, element) {
+			$scope.close = function() {
+				element.modal('hide');
+			}
+			$scope.ok = function() {
+				element.modal('hide');
+			}
+		}
+
+		return {
+			message: function(title, message) {
+				var element, scope, controller, link;
+
+				$http.get('/partials/modal.html').success(function(data) {
+					element = $(data);
+
+					scope = $rootScope.$new();
+					link = $compile(element);
+
+					controller = $controller(DialogCtrl, { $scope: scope, element: element });
+					element.data('$ngControllerController', controller);
+
+					scope.title = title;
+					scope.message = message;
+
+					link(scope);
+					element.modal();
+					$('body').append(element);
+				});
+			}
+		}
 	}]);
+
+
