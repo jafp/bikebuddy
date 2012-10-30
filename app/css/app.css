@@ -191,8 +191,12 @@ h4 {
 	margin-left: 15px;
 }
 
+.form-nice li.big > span {
+	line-height: 14px;
+}
+
 .form-nice ul > li > span > img {
-	margin-top: -5px;
+	margin-top: -4px;
 }
 
 .form-nice span.invalid {

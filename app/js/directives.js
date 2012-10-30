@@ -15,13 +15,14 @@ angular.module('bb.directives', [])
 			if (!ngModel) return;
 
 			element = $(element);
+			element.attr('readonly', 'readonly').css('background', 'white');
 			
 			element.datepicker({
-				format: 'dd/mm/yyyy'
-			});
-
-			element.on('changeDate', function() {
-				scope.$apply(update);
+				minDate: 0,
+				dateFormat: 'dd/mm/yy',
+				onSelect: function() {
+					scope.$apply(update);
+				}
 			});
 
 			function update() {
