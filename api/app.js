@@ -122,6 +122,7 @@ app.put('/api/users', api.users.create);
 app.get('/api/users', api.users.get);
 app.get('/api/users/session', api.users.currentUser);
 app.get('/api/users/session/trips', api.users.trips);
+app.get('/api/users/session/previousTrips', api.users.previousTrips);
 app.post('/api/users/session', api.users.login);
 app.post('/api/users/session/picture', api.users.picture);
 app.delete('/api/users/session', api.users.logout);

@@ -205,8 +205,6 @@ function TripCtrl($scope, $rootScope, $routeParams, $http, $location, $controlle
 				$scope.trip.myTrip = $scope.trip.creator._id === $rootScope.user._id;
 				$scope.comments = data.trip.comments;
 
-
-
 				if (_.find($scope.trip.participants, function(p) { return p.user._id === $rootScope.user._id; })) {
 					$scope.trip.participating = true;
 				}
@@ -217,6 +215,7 @@ function TripCtrl($scope, $rootScope, $routeParams, $http, $location, $controlle
 	}
 
 	$scope.sendComment = function() {
+		console.log($scope.comment, id);
 		if (!$scope.comment.message) {
 			alert('Du kan da ikke sende tomme kommentarer!');
 		} else {
@@ -225,6 +224,7 @@ function TripCtrl($scope, $rootScope, $routeParams, $http, $location, $controlle
 					$scope.comment = {};
 					$scope.load();
 				} else {
+					alert("Vi kunne ikke gemme din kommentar!")
 					// error, handle it
 				}
 			});
@@ -318,7 +318,8 @@ function ProfileCtrl($scope, $rootScope, $http, $auth, $dialog) {
 		});
 	}
 
-
+	$scope.updateProfile = function() {
+	}
 
 	$http.get('/api/users/session/trips').success(function(data) {
 		if (data.error) {
@@ -326,6 +327,10 @@ function ProfileCtrl($scope, $rootScope, $http, $auth, $dialog) {
 		} else {
 			$scope.trips = data.trips;
 		}
+	});
+
+	$http.get('/api/users/session/previousTrips').success(function(data) {
+		$scope.previousTrips = data.trips;
 	});
 }
 ProfileCtrl.$inject = ['$scope','$rootScope','$http','$auth','$dialog'];

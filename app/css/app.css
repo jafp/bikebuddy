@@ -87,7 +87,8 @@ h4 {
 	color: white;
 	text-align: center;
 	box-shadow: inset 0px -1px 8px #000;
-	background: url(/static/img/stressed_linen.png);
+	/*background: url(/static/img/stressed_linen.png);*/
+	background: url(/static/img/wild_oliva.png);
 }
 
 .outer .promotion > h1 {
@@ -131,6 +132,15 @@ h4 {
 .col10 { width: 780px; }
 .col11 { width: 860px; }
 .col12 { width: 940px; }
+
+.line-right {
+	margin-right: 9px;
+	border-right: 1px solid #eee;
+}
+
+.line-right p {
+	padding-right: 10px;
+}
 
 
 /**
@@ -279,7 +289,7 @@ h4 {
 
 .smartbox {
 	margin-bottom: 15px;
-	border: 1px solid #DDD;
+	border: 1px solid #ddd;
 	border-radius: 4px;
 }
 
@@ -456,8 +466,12 @@ h4 {
 	float: left;
 }
 
-.participant small {
-	color: #aaa;
+.participant h5 {
+	margin-top: 0;
+}
+
+.participant span {
+	color: #666;
 }
 
 .trip-description {

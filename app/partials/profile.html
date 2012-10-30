@@ -15,32 +15,69 @@
 						Herunder kan du se hvilke ture du deltager i, og ture som du selv har oprettet.
 					</div>
 
-					<table class="table table-hover">
-						<colgroup>
-							<col style="width: 100px" />
-							<col style="width: 200px" />
-							<col />
-						</colgroup>
-						<thead>
-							<tr>
-								<th>Type</th>
-								<th>Dato og tid</th>
-								<th>By</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="trip in trips">
-								<td><span class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</span></td>
-								<td>{{ trip.when | date:'dd-MM-yyyy HH:mm' }}</td>
-								<td>{{ trip.city }} <small>({{trip.where}})</small><span class="pull-right"><a href="#/tur/{{ trip._id }}">Se mere</a></span></td>
-							</tr>
-							<tr ng-show="trips.length == 0">
-								<td colspan="3">
-									<i>Du er ikke telmedt nogle ture! <a href="#/ture">Find nogle her</a></i>
-								</td>
-							</tr>
-					</table>
+					<div class="smartbox">
+						<h4 class="smartbox-header">Kommende ture</h4>
+						<div class="smartbox-inner">
+							<table class="table table-hover">
+								<colgroup>
+									<col style="width: 100px" />
+									<col style="width: 200px" />
+									<col />
+								</colgroup>
+								<thead>
+									<tr>
+										<th>Type</th>
+										<th>Dato og tid</th>
+										<th>By</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="trip in trips">
+										<td><span class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</span></td>
+										<td>{{ trip.when | date:'dd-MM-yyyy HH:mm' }}</td>
+										<td>{{ trip.city }} <small>({{trip.where}})</small><span class="pull-right"><a href="#/tur/{{ trip._id }}">Se mere</a></span></td>
+									</tr>
+									<tr ng-show="trips.length == 0">
+										<td colspan="3">
+											Du er ikke telmedt nogle ture! <a href="#/ture">Find nogle her</a>
+										</td>
+									</tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="smartbox">
+						<h4 class="smartbox-header">Tidligere ture</h4>
+						<div class="smartbox-inner">
+							<table class="table table-hover">
+								<colgroup>
+									<col style="width: 100px" />
+									<col style="width: 200px" />
+									<col />
+								</colgroup>
+								<thead>
+									<tr>
+										<th>Type</th>
+										<th>Dato og tid</th>
+										<th>By</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="trip in previousTrips">
+										<td><span class="label ng-class: {'label-success': trip.type == 'MTB', 'label-inverse': trip.type == 'ROAD'}">{{ trip.type }}</span></td>
+										<td>{{ trip.when | date:'dd-MM-yyyy HH:mm' }}</td>
+										<td>{{ trip.city }} <small>({{trip.where}})</small><span class="pull-right"><a href="#/tur/{{ trip._id }}">Se mere</a></span></td>
+									</tr>
+									<tr ng-show="previousTrips.length == 0">
+										<td colspan="3">
+											<i>Du er ikke telmedt nogle ture! <a href="#/ture">Find nogle her</a></i>
+										</td>
+									</tr>
+							</table>
+						</div>
+					</div>
 				</div>
+				
 				<div class="tab-pane" id="tab2">
 					<form class="form-nice">
 						<ul>

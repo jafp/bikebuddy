@@ -26,7 +26,18 @@ exports.users = {
 	trips: function(req, res) {
 		var userId = req.session.user._id;
 
-		Trip.find({ 'participants.user': userId }, function(err, trips) {
+		Trip.find({ 'participants.user': userId, 'when': { $gt: Date.now() } }, function(err, trips) {
+			if (err) {
+				res.send({ error: err });
+			} else {
+				res.send({ trips: trips });
+			}
+		});
+	},
+	previousTrips: function(req, res) {
+		var userId = req.session.user._id;
+
+		Trip.find({ 'participants.user': userId, 'when': { $lt: Date.now() } }, function(err, trips) {
 			if (err) {
 				res.send({ error: err });
 			} else {

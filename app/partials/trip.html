@@ -4,8 +4,8 @@
 			<h4>
 				{{ trip.type | tripType }} fra {{ trip.city }}
 				<small>
-					<!--<i class="icon-time"></i>--> <strong>Tidspunkt:</strong> {{ trip.when | date:'d/M/yyyy HH:mm' }}
-					<strong><!--<i class="icon-globe"></i>--> Mødested:</strong> {{ trip.where }}
+					({{ trip.where }})
+					{{ trip.when | date:'d/M/yyyy HH:mm' }}
 				</small>
 
 				<span class="pull-right label label-success" ng-show="trip.participating">
@@ -87,9 +87,8 @@
 					<div class="participant" ng-repeat="participant in trip.participants">
 						<img profile-picture="participant.user" src="" class="profile-image"/>
 						<div>
-							<strong>{{ participant.user.name }}</strong> 
-							<br/>
-							<small>Tilmeldt turen {{ participant.joinedAt | date:'dd-MM-yyyy HH:mm' }}</small>
+							<h5>{{ participant.user.name }}</h5> 
+							<span>Tilmeldt turen {{ participant.joinedAt | date:'dd-MM-yyyy HH:mm' }}</span>
 						</div>
 					</div>
 				</div>

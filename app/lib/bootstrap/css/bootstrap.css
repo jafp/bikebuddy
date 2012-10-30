@@ -3859,6 +3859,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .nav-tabs > li > a {
+  color: #999;
   padding-top: 8px;
   padding-bottom: 8px;
   line-height: 20px;
@@ -3878,6 +3879,7 @@ input[type="submit"].btn.btn-mini {
   cursor: default;
   background-color: #ffffff;
   border: 1px solid #ddd;
+  font-weight: bold;
   border-bottom-color: transparent;
 }
 
