@@ -29,6 +29,7 @@ angular.module('bb', ['bb.filters', 'bb.services', 'bb.directives']).
 		$rootScope.$on('$routeChangeStart', function() {
 			ngView.hide()
 		});
+		
 		$rootScope.$on('$routeChangeSuccess', function() {
 			ngView.fadeIn(200);
 		});
